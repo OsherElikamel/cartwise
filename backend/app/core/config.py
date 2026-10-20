@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     # Each tracked branch costs ~7 MB (items, deals, trigram index); this caps the database.
     MAX_TRACKED_STORES: int = 50
     PRUNE_AFTER_DAYS: int = 30
+    # Downloaded price files are only needed for the current run; keep a few days for debugging.
+    CACHE_DAYS: int = 3
 
     LLM_PROVIDER: Literal["gemini", "anthropic"] = "gemini"
     GEMINI_API_KEY: str = ""

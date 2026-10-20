@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import Literal
 from uuid import UUID
@@ -52,6 +53,7 @@ class StoreBasket(BaseModel):
     chain_slug: str
     chain_name: str
     store_name: str
+    prices_updated_at: datetime | None = Field(None, description="When this branch's prices were last loaded")
     shared_total: Decimal
     full_total: Decimal
     missing: list[int]

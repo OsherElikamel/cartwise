@@ -62,15 +62,15 @@ class GeminiProvider:
                     continue
                 logger.error("Gemini call failed on %s: %s", model, exc)
                 if exc.code == 429:
-                    raise UpstreamError("CartWise's free AI quota is busy. Please try again in a minute.") from exc
-                raise UpstreamError("The AI service is unavailable right now. Please try again.") from exc
+                    raise UpstreamError("CartWise's free AI quota is busy. Please try again in a minute.", "ai_busy") from exc
+                raise UpstreamError("The AI service is unavailable right now. Please try again.", "ai_unavailable") from exc
 
         # Validate with our own models: the schema guides the model, our code enforces it.
         try:
             return schema.model_validate_json(response.text or "")
         except ValidationError as exc:
             logger.error("Gemini output failed validation: %s | %.500s", exc, response.text)
-            raise UpstreamError("The AI returned an unexpected answer. Please try again.") from exc
+            raise UpstreamError("The AI returned an unexpected answer. Please try again.", "ai_bad_answer") from exc
 
     def parse_list(self, text: str) -> list[ParsedItem]:
         return self._generate(PARSE_LIST_SYSTEM, text, ParsedList, self.PARSE_THINKING_BUDGET).items

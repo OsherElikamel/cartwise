@@ -1,19 +1,44 @@
 import { isAxiosError } from 'axios';
-import type { MessageKey } from '../i18n/en';
+import en, { type MessageKey } from '../i18n/en';
 
-type Translate = (key: MessageKey) => string;
+type Translate = (key: MessageKey, vars?: Record<string, string | number>) => string;
 
-/** A message the user can read, from any API failure. Server messages are shown as sent. */
+function isMessageKey(key: string): key is MessageKey {
+  return key in en;
+}
+
+/** The server's error code, if the response carried one. */
+export function getErrorCode(err: unknown): string | null {
+  if (!isAxiosError(err)) return null;
+  const code: unknown = err.response?.data?.code;
+  return typeof code === 'string' ? code : null;
+}
+
+/** A message the user can read, in their language, from any API failure.
+ *  The server sends a stable `code`; its English `detail` is only a fallback. */
 export function getErrorMessage(err: unknown, t: Translate, fallback: MessageKey = 'error.generic'): string {
-  if (isAxiosError(err)) {
-    if (!err.response) return t('error.offline');
-    if (err.response.status === 429) return t('error.tooMany');
-    const detail: unknown = err.response.data?.detail;
-    if (typeof detail === 'string') return detail;
-    // FastAPI validation errors: [{ msg: "..." }, ...]
-    if (Array.isArray(detail) && detail.length > 0 && typeof detail[0]?.msg === 'string') {
-      return detail[0].msg.replace(/^Value error, /, '');
-    }
+  if (!isAxiosError(err)) return t(fallback);
+  if (!err.response) return t('error.offline');
+
+  const data = err.response.data ?? {};
+  if (err.response.status === 429) {
+    const seconds = Number(data.retry_after ?? err.response.headers['retry-after']);
+    return Number.isFinite(seconds) && seconds > 0 ? t('error.rateLimited', { seconds }) : t('error.tooMany');
   }
-  return t(fallback);
+
+  const code = getErrorCode(err);
+  if (code) {
+    const key = `error.code.${code}`;
+    if (isMessageKey(key)) return t(key);
+  }
+
+  // FastAPI validation errors: [{ loc: ["body", "password"], msg: "..." }, ...]
+  if (err.response.status === 422 && Array.isArray(data.detail)) {
+    const field = String(data.detail[0]?.loc?.at(-1) ?? '');
+    if (field === 'password') return t('error.code.weak_password');
+    if (field === 'email') return t('error.code.invalid_email');
+    return t('error.code.invalid_input');
+  }
+
+  return typeof data.detail === 'string' ? data.detail : t(fallback);
 }

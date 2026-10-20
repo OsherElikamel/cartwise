@@ -6,8 +6,9 @@ export async function login(email: string, password: string): Promise<string> {
   return res.data.access_token;
 }
 
-export async function register(name: string, email: string, password: string): Promise<User> {
-  const res = await api.post<User>('/auth/register', { name, email, password });
+/** Creates the account and signs in, in one request: never a half-registered state. */
+export async function register(name: string, email: string, password: string): Promise<{ access_token: string; user: User }> {
+  const res = await api.post<{ access_token: string; user: User }>('/auth/register', { name, email, password });
   return res.data;
 }
 

@@ -3,7 +3,6 @@ import logging
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.core import errors
@@ -16,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="CartWise API", version="0.1.0")
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,10 +35,22 @@ DOMAIN_ERROR_STATUS = {
 
 @app.exception_handler(errors.DomainError)
 async def domain_error_handler(_request: Request, exc: errors.DomainError):
-    code = DOMAIN_ERROR_STATUS.get(type(exc), status.HTTP_400_BAD_REQUEST)
-    if code >= 500:
+    http_status = DOMAIN_ERROR_STATUS.get(type(exc), status.HTTP_400_BAD_REQUEST)
+    if http_status >= 500:
         logger.error("Upstream failure: %s", exc.detail)
-    return JSONResponse(status_code=code, content={"detail": exc.detail})
+    return JSONResponse(status_code=http_status, content={"detail": exc.detail, "code": exc.code})
+
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    # Tell the client exactly how long the window is, instead of a vague "later".
+    retry_after = exc.limit.limit.get_expiry()
+    logger.warning("Rate limit %s hit on %s", exc.limit.limit, request.url.path)
+    return JSONResponse(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        content={"detail": f"Too many attempts. Try again in {retry_after} seconds.", "code": "rate_limited", "retry_after": retry_after},
+        headers={"Retry-After": str(retry_after)},
+    )
 
 
 @app.exception_handler(Exception)

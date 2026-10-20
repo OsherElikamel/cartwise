@@ -6,9 +6,13 @@ one to an HTTP status in a single exception handler.
 
 
 class DomainError(Exception):
-    def __init__(self, detail: str):
+    """`detail` is a readable English message (logs, API docs); `code` is a stable
+    identifier the frontend translates, so users see errors in their language."""
+
+    def __init__(self, detail: str, code: str = "error"):
         super().__init__(detail)
         self.detail = detail
+        self.code = code
 
 
 class NotFoundError(DomainError):

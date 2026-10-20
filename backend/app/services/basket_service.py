@@ -68,7 +68,9 @@ def allowed_store_ids(db: Session, user: User | None, requested: list[UUID] | No
         return allowed
     outside = set(requested) - set(allowed)
     if outside:
-        raise ValidationError("Compare only on your own branches" if user else "Sign in to compare on other branches")
+        if user:
+            raise ValidationError("Compare only on your own branches", "own_branches_only")
+        raise ValidationError("Sign in to compare on other branches", "sign_in_for_branches")
     return requested
 
 
@@ -78,22 +80,22 @@ def _resolve_stores(db: Session, store_ids: list[UUID] | None) -> list[tuple[Sto
     rows = db.execute(query.order_by(Chain.name)).all()
 
     if store_ids and len(rows) != len(set(store_ids)):
-        raise ValidationError("One or more branches were not found")
+        raise ValidationError("One or more branches were not found", "branch_not_found")
     if not rows:
-        raise ValidationError("No branches selected")
+        raise ValidationError("No branches selected", "no_branches")
     chains = [chain.slug for _, chain in rows]
     if len(chains) != len(set(chains)):
-        raise ValidationError("Choose one branch per chain")
+        raise ValidationError("Choose one branch per chain", "one_branch_per_chain")
     untracked = [store.name for store, _ in rows if not store.is_tracked]
     if untracked:
-        raise ValidationError(f"No price data yet for: {', '.join(untracked)}")
+        raise ValidationError(f"No price data yet for: {', '.join(untracked)}", "prices_not_ready")
     return [(store, chain) for store, chain in rows]
 
 
 def parse_list(llm: LLMProvider, text: str) -> list[ParsedItem]:
     items = llm.parse_list(text)
     if not items:
-        raise ValidationError("No products found in the list")
+        raise ValidationError("No products found in the list", "empty_list")
     return items
 
 
@@ -290,7 +292,7 @@ def _build_basket(store, chain, items, keys, chosen, candidates) -> StoreBasket:
         ))
     return StoreBasket(
         store_id=store.id, chain_slug=chain.slug, chain_name=chain.name, store_name=store.name,
-        shared_total=Decimal("0.00"),
+        prices_updated_at=store.prices_synced_at, shared_total=Decimal("0.00"),
         full_total=sum((line.line_total for line in lines if line.line_total is not None), Decimal("0.00")),
         missing=missing, lines=lines,
     )

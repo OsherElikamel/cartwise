@@ -65,7 +65,7 @@ def save_choice(db: Session, user: User, key: str, store_id: UUID, item_code: st
         .where(StoreItem.store_id == store_id, StoreItem.item_code == item_code)
     ).first()
     if row is None:
-        raise NotFoundError("That product isn't sold at this branch")
+        raise NotFoundError("That product isn't sold at this branch", "product_not_at_branch")
     item, _store, chain = row
     remember(db, user, key, chain.id, item.item_code, item.name)
     db.commit()
@@ -86,7 +86,7 @@ def list_matches(db: Session, user: User) -> list[MatchResponse]:
 def forget(db: Session, user: User, match_id: UUID) -> None:
     result = db.execute(delete(ItemMatch).where(ItemMatch.id == match_id, ItemMatch.user_id == user.id))
     if result.rowcount == 0:
-        raise NotFoundError("Remembered match not found")
+        raise NotFoundError("Remembered match not found", "match_not_found")
     db.commit()
 
 

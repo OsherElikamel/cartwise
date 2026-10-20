@@ -69,6 +69,7 @@ export interface StoreBasket {
   chain_slug: string;
   chain_name: string;
   store_name: string;
+  prices_updated_at?: string | null;
   shared_total: string;
   full_total: string;
   missing: number[];

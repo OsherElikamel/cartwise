@@ -2,6 +2,8 @@ import re
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
+from app.schemas.user import UserResponse
+
 
 class RegisterRequest(BaseModel):
     name: str = Field(min_length=2, max_length=100)
@@ -25,3 +27,10 @@ class LoginRequest(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+class RegisterResponse(TokenResponse):
+    """Registration signs the user in within the same response: no second
+    request that can fail (or hit a rate limit) after the account exists."""
+
+    user: UserResponse

@@ -40,6 +40,20 @@ def _fetch(source: Source, remote: RemoteFile, chain_slug: str) -> bytes:
     return raw
 
 
+def prune_cache(older_than_days: int) -> int:
+    """Delete downloaded files older than the given age; they only serve the current run."""
+    root = Path(settings.DATA_DIR)
+    if not root.exists():
+        return 0
+    cutoff = datetime.now(timezone.utc).timestamp() - older_than_days * 86400
+    removed = 0
+    for path in root.glob("*/*"):
+        if path.is_file() and path.stat().st_mtime < cutoff:
+            path.unlink()
+            removed += 1
+    return removed
+
+
 def sync_chains(db: Session) -> None:
     for config in CHAINS:
         stmt = pg_insert(Chain).values(

@@ -4,6 +4,7 @@
     python -m app.ingestion.run track rami-levy 1 # start tracking a branch
     python -m app.ingestion.run prices            # refresh every tracked branch
     python -m app.ingestion.run prune             # untrack branches nobody follows
+    python -m app.ingestion.run nightly           # all of the above, in order, plus cache cleanup
 """
 
 import argparse
@@ -17,7 +18,7 @@ from app.core.errors import DomainError
 from app.db.database import SessionLocal
 from app.ingestion.chains import CHAINS, CHAINS_BY_SLUG
 from app.ingestion.parsers import normalize_store_code
-from app.ingestion.pipeline import prune_abandoned_stores, sync_chains, sync_store_prices, sync_stores
+from app.ingestion.pipeline import prune_abandoned_stores, prune_cache, sync_chains, sync_store_prices, sync_stores
 from app.models.chain import Chain, Store
 
 logger = logging.getLogger("cartwise.ingestion")
@@ -80,12 +81,27 @@ def cmd_prices(args) -> int:
     return 1 if failures else 0
 
 
+def cmd_nightly(args) -> int:
+    """The scheduled job: branch lists, then pruning, then prices, then cache cleanup.
+
+    Each step runs even if an earlier one failed (a chain's portal being down
+    shouldn't stop the others), and the exit code reports any failure.
+    """
+    no_filter = argparse.Namespace(chain=None, days=settings.PRUNE_AFTER_DAYS)
+    results = [cmd_stores(no_filter), cmd_prune(no_filter), cmd_prices(no_filter)]
+    removed = prune_cache(settings.CACHE_DAYS)
+    logger.info("Removed %d cached files older than %d days", removed, settings.CACHE_DAYS)
+    return 1 if any(results) else 0
+
+
 def _chains(slug: str | None):
     return [CHAINS_BY_SLUG[slug]] if slug else CHAINS
 
 
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    # One line per HTTP request drowns the summary lines that matter in the job logs.
+    logging.getLogger("httpx").setLevel(logging.WARNING)
     parser = argparse.ArgumentParser(prog="python -m app.ingestion.run")
     sub = parser.add_subparsers(dest="command", required=True)
     choices = list(CHAINS_BY_SLUG)
@@ -103,6 +119,9 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("prune", help="stop tracking branches nobody follows")
     p.add_argument("--days", type=int, default=settings.PRUNE_AFTER_DAYS)
     p.set_defaults(func=cmd_prune)
+
+    p = sub.add_parser("nightly", help="stores + prune + prices + cache cleanup (the scheduled job)")
+    p.set_defaults(func=cmd_nightly)
 
     p = sub.add_parser("prices", help="refresh prices for tracked branches")
     p.add_argument("--chain", choices=choices)

@@ -24,7 +24,7 @@ def _to_response(lst: ShoppingList) -> ListResponse:
 def _get_owned(db: Session, user: User, list_id: UUID) -> ShoppingList:
     lst = db.scalar(select(ShoppingList).where(ShoppingList.id == list_id, ShoppingList.user_id == user.id))
     if lst is None:
-        raise NotFoundError("List not found")
+        raise NotFoundError("List not found", "list_not_found")
     return lst
 
 
@@ -104,7 +104,7 @@ def get_run(db: Session, user: User, run_id: UUID) -> RunDetail:
         .where(BasketRun.id == run_id, BasketRun.user_id == user.id)
     ).first()
     if row is None:
-        raise NotFoundError("Comparison not found")
+        raise NotFoundError("Comparison not found", "comparison_not_found")
     run, name = row
     return RunDetail(**_summary(run, name).model_dump(), result=BasketComparison.model_validate(run.result))
 

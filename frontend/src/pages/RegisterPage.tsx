@@ -6,7 +6,7 @@ import TextField from '../components/ui/TextField';
 import { useAuth } from '../contexts/AuthContext';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useI18n } from '../i18n/LanguageContext';
-import { getErrorMessage } from '../utils/errors';
+import { getErrorCode, getErrorMessage } from '../utils/errors';
 
 export default function RegisterPage() {
   const { t } = useI18n();
@@ -17,17 +17,20 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [emailTaken, setEmailTaken] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setEmailTaken(false);
     try {
       await register(name, email, password);
       navigate('/branches', { replace: true });
     } catch (err) {
       setError(getErrorMessage(err, t, 'auth.createFailed'));
+      setEmailTaken(getErrorCode(err) === 'email_taken');
     } finally {
       setLoading(false);
     }
@@ -47,7 +50,16 @@ export default function RegisterPage() {
           hint={t('auth.passwordHint')}
           value={password} onChange={(e) => setPassword(e.target.value)}
         />
-        {error && <p role="alert" className="text-sm text-danger">{error}</p>}
+        {error && (
+          <p role="alert" className="text-sm text-danger">
+            {error}{' '}
+            {emailTaken && (
+              <Link to={`/login?email=${encodeURIComponent(email)}`} className="font-semibold text-accent hover:underline">
+                {t('auth.emailTakenAction')}
+              </Link>
+            )}
+          </p>
+        )}
         <Button type="submit" loading={loading} className="w-full">{t('auth.createButton')}</Button>
       </form>
     </AuthLayout>

@@ -16,13 +16,18 @@ interface StoreReceiptProps {
 export default function StoreReceipt({
   store, items, sharedItems, editable, canSave, busyLine, onConfirm, onSwap,
 }: StoreReceiptProps) {
-  const { t, tp, price, chain } = useI18n();
+  const { t, tp, price, chain, dateTime } = useI18n();
   const hasExtras = store.full_total !== store.shared_total;
   return (
     <section aria-label={t('results.receiptAria', { chain: chain(store.chain_slug) })} className="rounded-3xl border border-app-border bg-app-surface p-4 md:p-6">
       <header className="mb-1 text-center">
         <p className="font-mono text-sm font-bold uppercase tracking-widest">{chain(store.chain_slug)}</p>
         <p dir="auto" className="text-center text-xs text-app-text-secondary">{store.store_name}</p>
+        {store.prices_updated_at && (
+          <p className="mt-0.5 font-mono text-[0.7rem] text-app-text-secondary">
+            {t('results.pricesFrom', { when: dateTime(store.prices_updated_at) })}
+          </p>
+        )}
       </header>
       <div className="receipt-rule my-3" />
       <ul className="divide-y divide-app-border">

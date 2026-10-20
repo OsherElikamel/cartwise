@@ -1,4 +1,4 @@
-import { AlertTriangle, Info, Sparkles } from 'lucide-react';
+import { AlertTriangle, Clock, Info, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import type { Alternative, BasketComparison, BasketLine, StoreBasket } from '../../types';
@@ -15,13 +15,16 @@ interface ResultsViewProps {
 }
 
 export default function ResultsView({ result, editable, canSave, busyLine = null, onConfirm, onSwap }: ResultsViewProps) {
-  const { t, tp, price, chain } = useI18n();
+  const { t, tp, price, chain, dateTime } = useI18n();
   const [selectedId, setSelectedId] = useState(result.stores[0]?.store_id ?? '');
   const selected = result.stores.find((s) => s.store_id === selectedId) ?? result.stores[0];
   const cheapest = result.stores[0];
   const toCheck = result.stores.reduce((n, s) => n + s.lines.filter((l) => l.confidence === 'low').length, 0);
   const total = result.items.length;
   const shared = result.shared_items.length;
+  // The oldest branch's load time: every price shown is at least this fresh.
+  const loadedTimes = result.stores.map((s) => s.prices_updated_at).filter((v): v is string => Boolean(v)).sort();
+  const pricesFrom = loadedTimes[0];
 
   if (!cheapest) return null;
 
@@ -43,6 +46,12 @@ export default function ResultsView({ result, editable, canSave, busyLine = null
           <Info size={14} className="mt-px shrink-0" aria-hidden />
           {shared === total ? t('results.allFound', { count: total }) : t('results.rankedOnShared', { shared, total })}
         </p>
+        {pricesFrom && (
+          <p className="mt-1 flex items-center gap-1.5 text-xs text-app-text-secondary">
+            <Clock size={14} aria-hidden />
+            {t('results.pricesFrom', { when: dateTime(pricesFrom) })}
+          </p>
+        )}
         {result.remembered_matches > 0 && (
           <p className="mt-1 flex items-center gap-1.5 text-xs text-app-text-secondary">
             <Sparkles size={14} aria-hidden />

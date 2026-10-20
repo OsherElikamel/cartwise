@@ -45,13 +45,13 @@ def follow(db: Session, user: User, store_id: UUID) -> tuple[StoreResponse, bool
     """
     row = db.execute(select(Store, Chain).join(Chain).where(Store.id == store_id)).first()
     if row is None:
-        raise NotFoundError("Branch not found")
+        raise NotFoundError("Branch not found", "branch_not_found")
     store, chain = row
 
     if not store.is_tracked:
         tracked = db.scalar(select(func.count()).select_from(Store).where(Store.is_tracked.is_(True)))
         if tracked >= settings.MAX_TRACKED_STORES:
-            raise ConflictError("CartWise is at its branch limit right now; pick a branch that's already available")
+            raise ConflictError("CartWise is at its branch limit right now; pick a branch that's already available", "branch_limit")
         store.is_tracked = True
         logger.info("Branch %s (%s) is now tracked", store.id, store.name)
 
@@ -66,7 +66,7 @@ def follow(db: Session, user: User, store_id: UUID) -> tuple[StoreResponse, bool
 def unfollow(db: Session, user: User, store_id: UUID) -> None:
     result = db.execute(delete(UserStore).where(UserStore.user_id == user.id, UserStore.store_id == store_id))
     if result.rowcount == 0:
-        raise NotFoundError("You don't follow this branch")
+        raise NotFoundError("You don't follow this branch", "not_following")
     db.commit()
 
 
