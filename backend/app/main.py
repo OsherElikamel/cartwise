@@ -9,6 +9,7 @@ from slowapi.errors import RateLimitExceeded
 from app.core import errors
 from app.core.config import settings
 from app.core.rate_limit import limiter
+from app.routers import baskets, catalog
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -46,6 +47,10 @@ async def domain_error_handler(_request: Request, exc: errors.DomainError):
 async def global_exception_handler(_request: Request, exc: Exception):
     logger.exception("Unhandled exception: %s", exc)
     return JSONResponse(status_code=500, content={"detail": "Internal server error"})
+
+
+app.include_router(catalog.router)
+app.include_router(baskets.router)
 
 
 @app.get("/api/health", tags=["Health"])

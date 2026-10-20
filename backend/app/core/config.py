@@ -1,3 +1,6 @@
+from typing import Literal
+
+from pydantic import model_validator
 from pydantic_settings import BaseSettings
 
 
@@ -10,7 +13,21 @@ class Settings(BaseSettings):
     RATE_LIMIT_ENABLED: bool = True
     DATA_DIR: str = "data"
 
+    LLM_PROVIDER: Literal["gemini", "anthropic"] = "gemini"
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-2.5-flash"
+    ANTHROPIC_API_KEY: str = ""
+    CLAUDE_MODEL: str = "claude-sonnet-5-5"
+
     model_config = {"env_file": ".env", "extra": "ignore"}
+
+    @model_validator(mode="after")
+    def _require_active_llm_key(self):
+        # Only the selected provider's key is required, but that one must exist.
+        key = self.GEMINI_API_KEY if self.LLM_PROVIDER == "gemini" else self.ANTHROPIC_API_KEY
+        if not key:
+            raise ValueError(f"LLM_PROVIDER={self.LLM_PROVIDER} needs its API key set")
+        return self
 
     @property
     def database_url_for_sqlalchemy(self) -> str:

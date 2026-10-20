@@ -34,10 +34,11 @@ PRICES_XML = """<Root><ChainID>7290027600007</ChainID><StoreID>001</StoreID><Ite
 </Items></Root>"""
 
 
-def promo(promotion_id, club, items_xml, min_purchase="0.00"):
+def promo(promotion_id, club, items_xml, min_purchase="0.00", description=None, coupon="0"):
     return f"""<Promotion>
       <PromotionID>{promotion_id}</PromotionID>
-      <PromotionDescription>deal {promotion_id}</PromotionDescription>
+      <PromotionDescription>{description or f"deal {promotion_id}"}</PromotionDescription>
+      <AdditionalIsCoupon>{coupon}</AdditionalIsCoupon>
       <PromotionStartDateTime>2026-10-01T00:00:00.000</PromotionStartDateTime>
       <PromotionEndDateTime>2026-10-31T23:59:00.000</PromotionEndDateTime>
       <ClubID>{club}</ClubID>
@@ -105,3 +106,15 @@ def test_parse_promotions_skips_club_gift_and_threshold_deals():
         promo("6", "0 - כלל הלקוחות", promo_item("666", "2", "9.00")),
     ]) + "</Root>"
     assert [r.item_code for r in parse_promotions(xml.encode())] == ["666"]
+
+
+def test_parse_promotions_skips_coupons_and_conditions_hidden_in_text():
+    # All marked ClubID 0, yet none is a price every shopper gets.
+    xml = "<Root>" + "".join([
+        promo("7", "0", promo_item("777", "1", "2.90"), description="שמן קנולה 1לי ב2.90-אשראי"),
+        promo("8", "0", promo_item("888", "1", "5.00"), coupon="1"),
+        promo("9", "0", promo_item("999", "2", "9.00"), description="פסטה ב-50% מעל 100 מו2"),
+        promo("10", "0", promo_item("1010", "1", "4.00"), description="קוטג' ב4 בקופון"),
+        promo("11", "0", promo_item("1111", "3", "10.00"), description="במבה 3ב10"),
+    ]) + "</Root>"
+    assert [r.item_code for r in parse_promotions(xml.encode())] == ["1111"]

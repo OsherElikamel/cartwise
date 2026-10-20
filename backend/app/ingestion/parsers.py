@@ -17,6 +17,10 @@ from zoneinfo import ZoneInfo
 ISRAEL_TZ = ZoneInfo("Asia/Jerusalem")
 GZIP_MAGIC = b"\x1f\x8b"
 
+# Deals marked "for everyone" (ClubID 0) that still carry a condition in their
+# text: the chain's credit card, a coupon, club membership, or a minimum spend.
+CONDITIONAL_DEAL_WORDS = ("אשראי", "קופון", "מועדון", "חברי", "מעל ")
+
 
 @dataclass(frozen=True)
 class StoreRecord:
@@ -119,6 +123,10 @@ def normalize_store_code(code: str) -> str:
     return str(int(code)) if code.isdigit() else code
 
 
+def _is_conditional(*texts: str | None) -> bool:
+    return any(word in (text or "") for text in texts for word in CONDITIONAL_DEAL_WORDS)
+
+
 def _leading_int(value: str | None, default: int = 0) -> int:
     match = re.match(r"\s*(\d+)", value or "")
     return int(match.group(1)) if match else default
@@ -187,8 +195,9 @@ def parse_prices(raw: bytes) -> list[ItemRecord]:
 def parse_promotions(raw: bytes) -> list[PromotionRecord]:
     """Promotions open to every shopper, flattened to one record per item.
 
-    Skipped on purpose: club-only deals (ClubID != 0), deals with no price
-    (gifts, "spend 99 get a cooler bag"), and spend-threshold deals.
+    Skipped on purpose: club-only deals (ClubID != 0), coupons and deals whose
+    text names a condition (credit card, club, minimum spend), deals with no
+    price (gifts, "spend 99 get a cooler bag"), and spend-threshold deals.
     """
     root = parse_xml(raw)
     records: dict[tuple[str, str], PromotionRecord] = {}
@@ -199,6 +208,8 @@ def parse_promotions(raw: bytes) -> list[PromotionRecord]:
         if not promotion_id:
             continue
         description = _text(promo, "PromotionDescription") or ""
+        if _text(promo, "AdditionalIsCoupon") == "1" or _is_conditional(description, _text(promo, "Remarks")):
+            continue
         starts_at = _datetime(_text(promo, "PromotionStartDateTime", "PromotionStartDate"))
         ends_at = _datetime(_text(promo, "PromotionEndDateTime", "PromotionEndDate"))
 
