@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timezone
 from decimal import Decimal
 
 # Settings are read at import time: configure the test environment first.
@@ -19,6 +20,7 @@ from app.db.base import Base  # noqa: E402
 from app.db.database import get_db  # noqa: E402
 from app.main import app  # noqa: E402
 from app.models.chain import Chain, Store  # noqa: E402
+from app.routers import me as me_router  # noqa: E402
 from app.models.promotion import Promotion  # noqa: E402
 from app.models.store_item import StoreItem  # noqa: E402
 
@@ -43,8 +45,12 @@ class FakeLLM:
 
     def __init__(self) -> None:
         self.bogus_codes_for: set[str] = set()
+        self.confidence = "high"
+        self.parse_calls = 0
+        self.match_calls = 0
 
     def parse_list(self, text_: str) -> list[ParsedItem]:
+        self.parse_calls += 1
         items = []
         for line in filter(None, (raw.strip() for raw in text_.splitlines())):
             words = line.split()
@@ -56,11 +62,12 @@ class FakeLLM:
         return items
 
     def choose_matches(self, items: list[MatchRequestItem]) -> list[MatchDecision]:
+        self.match_calls += 1
         decisions = []
         for item in items:
             for chain, candidates in item.candidates_by_chain.items():
                 code = "0000000000000" if chain in self.bogus_codes_for else candidates[0].item_code
-                decisions.append(MatchDecision(index=item.index, chain=chain, item_code=code, confidence="high", reason="test"))
+                decisions.append(MatchDecision(index=item.index, chain=chain, item_code=code, confidence=self.confidence, reason="test"))
         return decisions
 
 
@@ -92,6 +99,15 @@ def _clean_tables():
         for table in reversed(Base.metadata.sorted_tables):
             conn.execute(text(f'TRUNCATE TABLE "{table.name}" CASCADE'))
         conn.commit()
+
+
+@pytest.fixture(autouse=True)
+def _no_network_price_loads(monkeypatch):
+    """No test may download real chain files: background loads become no-ops.
+
+    Tests that care about loads (test_my_stores) replace this with a recorder.
+    """
+    monkeypatch.setattr(me_router, "sync_store_prices_by_id", lambda store_id: None)
 
 
 @pytest.fixture
@@ -138,8 +154,9 @@ def catalog(db):
     db.add_all([shufersal, rami])
     db.flush()
 
-    sh_demo = Store(chain_id=shufersal.id, store_code="92", name="דיל אשדוד", is_tracked=True, is_demo=True)
-    rl_demo = Store(chain_id=rami.id, store_code="709", name="שבט לוי אשדוד", is_tracked=True, is_demo=True)
+    loaded = datetime.now(timezone.utc)
+    sh_demo = Store(chain_id=shufersal.id, store_code="92", name="דיל אשדוד", is_tracked=True, is_demo=True, prices_synced_at=loaded)
+    rl_demo = Store(chain_id=rami.id, store_code="709", name="שבט לוי אשדוד", is_tracked=True, is_demo=True, prices_synced_at=loaded)
     rl_other = Store(chain_id=rami.id, store_code="1", name="תלפיות")
     db.add_all([sh_demo, rl_demo, rl_other])
     db.flush()
@@ -149,6 +166,7 @@ def catalog(db):
 
     db.add_all([
         item(sh_demo, "7290004131074", "חלב 3% תנובה 1 ליטר", "7.35"),
+        item(sh_demo, "7290004131081", "חלב 3% תנובה 2 ליטר", "13.90"),
         item(rl_demo, "7290004131074", "חלב 3% תנובה 1 ליטר", "6.20"),
         item(rl_demo, "7290000066318", "במבה 80 גרם", "4.50"),
         item(sh_demo, "2000001", "עגבניה", "7.90", weighted=True),

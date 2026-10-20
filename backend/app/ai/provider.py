@@ -20,5 +20,7 @@ def get_llm() -> LLMProvider:
     if settings.LLM_PROVIDER == "gemini":
         from app.ai.gemini import GeminiProvider
 
-        return GeminiProvider(api_key=settings.GEMINI_API_KEY, model=settings.GEMINI_MODEL)
+        return GeminiProvider(
+            api_key=settings.GEMINI_API_KEY, model=settings.GEMINI_MODEL, fallback_model=settings.GEMINI_FALLBACK_MODEL
+        )
     raise ValueError(f"Unsupported LLM_PROVIDER: {settings.LLM_PROVIDER}")

@@ -2,7 +2,7 @@
 
 from uuid import UUID
 
-from sqlalchemy import Float, func, or_, select, true
+from sqlalchemy import Float, func, literal, or_, select, true, tuple_
 from sqlalchemy.orm import Session
 
 from app.models.chain import Chain, Store
@@ -107,24 +107,45 @@ def search_products(
         .where(scope, score >= MIN_WORD_SIMILARITY)
         .subquery("ranked")
     )
-    deal = _best_deal(ranked.c.store_id, ranked.c.item_code, ranked.c.price)
-
     rows = db.execute(
+        _with_chain_and_deal(ranked).where(ranked.c.rank <= per_store).order_by(Chain.name, ranked.c.rank)
+    ).all()
+    return [_to_product(r) for r in rows]
+
+
+def get_products(db: Session, keys: list[tuple[UUID, str]]) -> dict[tuple[UUID, str], ProductResult]:
+    """Specific (store_id, item_code) products with their best live deal."""
+    if not keys:
+        return {}
+    picked = (
         select(
-            ranked,
+            StoreItem.store_id, StoreItem.item_code, StoreItem.name, StoreItem.manufacturer,
+            StoreItem.is_weighted, StoreItem.price, StoreItem.unit_price,
+            literal(1.0, Float).label("score"),
+        )
+        .where(tuple_(StoreItem.store_id, StoreItem.item_code).in_(keys))
+        .subquery("picked")
+    )
+    rows = db.execute(_with_chain_and_deal(picked)).all()
+    return {(r.store_id, r.item_code): _to_product(r) for r in rows}
+
+
+def _with_chain_and_deal(products):
+    """Add chain names and the best live deal to a subquery of store items."""
+    deal = _best_deal(products.c.store_id, products.c.item_code, products.c.price)
+    return (
+        select(
+            products,
             Chain.slug.label("chain_slug"),
             Chain.name.label("chain_name"),
             deal.c.description.label("deal_description"),
             deal.c.min_qty.label("deal_min_qty"),
             deal.c.effective_unit_price.label("deal_unit_price"),
         )
-        .join(Store, Store.id == ranked.c.store_id)
+        .join(Store, Store.id == products.c.store_id)
         .join(Chain, Chain.id == Store.chain_id)
         .outerjoin(deal, true())
-        .where(ranked.c.rank <= per_store)
-        .order_by(Chain.name, ranked.c.rank)
-    ).all()
-    return [_to_product(r) for r in rows]
+    )
 
 
 def _to_product(row) -> ProductResult:

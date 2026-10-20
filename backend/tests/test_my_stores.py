@@ -23,12 +23,8 @@ def test_following_an_untracked_branch_starts_loading_it(client, auth_headers, c
     assert other.is_tracked is True
 
 
-def test_following_a_loaded_branch_returns_200_without_loading(client, auth_headers, catalog, loads, db):
+def test_following_a_loaded_branch_returns_200_without_loading(client, auth_headers, catalog, loads):
     store = catalog["rami_levy"]
-    store.prices_synced_at = store.created_at
-    db.merge(store)
-    db.commit()
-
     res = client.post("/api/me/stores", json={"store_id": str(store.id)}, headers=auth_headers)
     assert res.status_code == 200
     assert loads == []

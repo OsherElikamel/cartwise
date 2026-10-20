@@ -22,34 +22,48 @@ class GeminiProvider:
     PARSE_THINKING_BUDGET = 0
     MATCH_THINKING_BUDGET = 1024
 
-    def __init__(self, api_key: str, model: str) -> None:
-        # The free tier answers 503 ("high demand") and 429 often enough that
-        # one failed call shouldn't fail the user's request: back off and retry.
+    def __init__(self, api_key: str, model: str, fallback_model: str | None = None) -> None:
+        # 503 ("high demand") is temporary: back off and retry. 429 is not retried
+        # here: the free tier's quota is per minute, so retrying the same model
+        # only spends more of it. A 429 moves on to the fallback model instead,
+        # which has its own quota.
         retry = types.HttpRetryOptions(
             attempts=4, initial_delay=1.0, max_delay=8.0, exp_base=2.0, jitter=0.5,
-            http_status_codes=[429, 500, 503, 504],
+            http_status_codes=[500, 503, 504],
         )
         self.client = genai.Client(api_key=api_key, http_options=types.HttpOptions(retry_options=retry))
-        self.model = model
+        self.models = [model] + ([fallback_model] if fallback_model and fallback_model != model else [])
 
-    def _generate(self, system: str, prompt: str, schema: type, thinking_budget: int | None = None):
-        try:
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    system_instruction=system,
-                    response_mime_type="application/json",
-                    response_json_schema=schema.model_json_schema(),
-                    temperature=0,
-                    thinking_config=(
-                        types.ThinkingConfig(thinking_budget=thinking_budget) if thinking_budget is not None else None
+    @staticmethod
+    def _thinking(model: str, budget: int) -> types.ThinkingConfig:
+        """Gemini 2.x takes a token budget; Gemini 3.x takes a level instead."""
+        if model.startswith("gemini-2."):
+            return types.ThinkingConfig(thinking_budget=budget)
+        return types.ThinkingConfig(thinking_level=types.ThinkingLevel.MINIMAL if budget == 0 else types.ThinkingLevel.LOW)
+
+    def _generate(self, system: str, prompt: str, schema: type, thinking_budget: int):
+        for attempt, model in enumerate(self.models, start=1):
+            try:
+                response = self.client.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system,
+                        response_mime_type="application/json",
+                        response_json_schema=schema.model_json_schema(),
+                        temperature=0,
+                        thinking_config=self._thinking(model, thinking_budget),
                     ),
-                ),
-            )
-        except genai_errors.APIError as exc:
-            logger.error("Gemini call failed: %s", exc)
-            raise UpstreamError("The AI service is unavailable right now. Please try again.") from exc
+                )
+                break
+            except genai_errors.APIError as exc:
+                if exc.code == 429 and attempt < len(self.models):
+                    logger.warning("Gemini quota hit on %s; falling back to %s", model, self.models[attempt])
+                    continue
+                logger.error("Gemini call failed on %s: %s", model, exc)
+                if exc.code == 429:
+                    raise UpstreamError("CartWise's free AI quota is busy. Please try again in a minute.") from exc
+                raise UpstreamError("The AI service is unavailable right now. Please try again.") from exc
 
         # Validate with our own models: the schema guides the model, our code enforces it.
         try:

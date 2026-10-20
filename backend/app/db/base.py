@@ -6,3 +6,5 @@ from app.models.chain import Chain, Store  # noqa: F401
 from app.models.store_item import StoreItem  # noqa: F401
 from app.models.promotion import Promotion  # noqa: F401
 from app.models.user_store import UserStore  # noqa: F401
+from app.models.item_match import ItemMatch  # noqa: F401
+from app.models.shopping_list import BasketRun, ShoppingList  # noqa: F401

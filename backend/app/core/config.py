@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     LLM_PROVIDER: Literal["gemini", "anthropic"] = "gemini"
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
+    # Used when the main model's per-minute free quota runs out (quotas are per model).
+    GEMINI_FALLBACK_MODEL: str = "gemini-3.5-flash-lite"
     ANTHROPIC_API_KEY: str = ""
     CLAUDE_MODEL: str = "claude-sonnet-5-5"
 

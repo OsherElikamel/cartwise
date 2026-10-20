@@ -9,7 +9,7 @@ from slowapi.errors import RateLimitExceeded
 from app.core import errors
 from app.core.config import settings
 from app.core.rate_limit import limiter
-from app.routers import auth, baskets, catalog, me
+from app.routers import auth, baskets, catalog, lists, matches, me
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -53,6 +53,8 @@ app.include_router(auth.router)
 app.include_router(me.router)
 app.include_router(catalog.router)
 app.include_router(baskets.router)
+app.include_router(matches.router)
+app.include_router(lists.router)
 
 
 @app.get("/api/health", tags=["Health"])
