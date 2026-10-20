@@ -15,6 +15,7 @@ STORES_XML = """<?xml version="1.0" encoding="UTF-8"?>
   <Stores>
     <Store><StoreID>001</StoreID><StoreName>תלפיות</StoreName><Address>האומן 15</Address><City>3000</City></Store>
     <Store><StoreID>002</StoreID><StoreName>מבשרת</StoreName><Address></Address><City>3000</City></Store>
+    <Store><StoreID>003</StoreID><StoreName>חולון</StoreName><Address>unknown</Address><City>0</City></Store>
   </Stores>
 </SubChain></SubChains></Root>"""
 
@@ -65,10 +66,11 @@ def test_store_codes_are_normalized():
 
 def test_parse_stores_reads_utf16_file_with_declaration():
     stores = parse_stores(STORES_XML.encode("utf-16"))
-    assert [s.store_code for s in stores] == ["1", "2"]
+    assert [s.store_code for s in stores] == ["1", "2", "3"]
     assert stores[0].name == "תלפיות"
     assert stores[0].sub_chain_code == "001"
     assert stores[1].address is None
+    assert stores[2].address is None  # the literal "unknown" some chains publish
 
 
 def test_parse_prices_handles_tag_casing_and_skips_invalid_prices():

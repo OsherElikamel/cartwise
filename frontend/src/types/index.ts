@@ -5,6 +5,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  home_locality_code: string | null;
   created_at: string;
 }
 
@@ -18,6 +19,25 @@ export interface Store {
   is_tracked: boolean;
   is_demo: boolean;
   is_ready: boolean;
+}
+
+export interface Locality {
+  code: string;
+  name_he: string;
+  name_en: string;
+}
+
+export interface NearbyGroup {
+  locality: Locality;
+  distance_km: number;
+  stores: Store[];
+}
+
+export interface ChainBranches {
+  chain_slug: string;
+  chain_name: string;
+  in_city: Store[];
+  nearby: NearbyGroup[];
 }
 
 export interface Chain {

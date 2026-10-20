@@ -9,13 +9,20 @@ from app.db.database import get_db
 from app.ingestion.pipeline import sync_store_prices_by_id
 from app.models.user import User
 from app.schemas.catalog import StoreResponse
-from app.services import user_store_service
+from app.schemas.locality import HomeUpdate, LocalityResponse
+from app.services import locality_service, user_store_service
 
 router = APIRouter(prefix="/api/me", tags=["My branches"])
 
 
 class FollowRequest(BaseModel):
     store_id: UUID
+
+
+@router.patch("/home", response_model=LocalityResponse | None)
+def set_home(data: HomeUpdate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """Remember the user's city, so branch suggestions start from it."""
+    return locality_service.set_home(db, user, data.home_locality_code)
 
 
 @router.get("/stores", response_model=list[StoreResponse])

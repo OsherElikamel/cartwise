@@ -48,6 +48,12 @@ python -m venv .venv && .venv/bin/pip install -r requirements.txt
 
 Tests: `.venv/bin/pytest`
 
+## Data sources
+
+- Prices, promotions and branches: the files each chain publishes under the 2014 Food Act.
+- Localities: the official list on [data.gov.il](https://data.gov.il/dataset/citiesandsettelments).
+- City coordinates: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, ODbL, via Nominatim (built once by `backend/scripts/build_localities.py`).
+
 ## License
 
 MIT

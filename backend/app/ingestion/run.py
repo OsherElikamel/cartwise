@@ -20,6 +20,8 @@ from app.ingestion.chains import CHAINS, CHAINS_BY_SLUG
 from app.ingestion.parsers import normalize_store_code
 from app.ingestion.pipeline import prune_abandoned_stores, prune_cache, sync_chains, sync_store_prices, sync_stores
 from app.models.chain import Chain, Store
+from app.models.locality import Locality
+from app.services.locality_service import resolve_store_localities, seed_localities
 
 logger = logging.getLogger("cartwise.ingestion")
 
@@ -35,7 +37,23 @@ def cmd_stores(args) -> int:
                 db.rollback()
                 failures += 1
                 logger.error("%s stores failed: %s", config.slug, exc.detail)
+        _resolve_localities(db)
     return 1 if failures else 0
+
+
+def _resolve_localities(db) -> None:
+    """Tie every branch to a city (new branches appear in each Stores file)."""
+    if db.scalar(select(Locality.code).limit(1)) is None:
+        logger.info("Loaded %d localities", seed_localities(db))
+    unresolved = resolve_store_localities(db)
+    logger.info("Branch cities resolved; %d branches without a city", unresolved)
+
+
+def cmd_localities(args) -> int:
+    with SessionLocal() as db:
+        logger.info("Loaded %d localities", seed_localities(db))
+        _resolve_localities(db)
+    return 0
 
 
 def cmd_track(args) -> int:
@@ -119,6 +137,9 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("prune", help="stop tracking branches nobody follows")
     p.add_argument("--days", type=int, default=settings.PRUNE_AFTER_DAYS)
     p.set_defaults(func=cmd_prune)
+
+    p = sub.add_parser("localities", help="load the city list and tie branches to cities")
+    p.set_defaults(func=cmd_localities)
 
     p = sub.add_parser("nightly", help="stores + prune + prices + cache cleanup (the scheduled job)")
     p.set_defaults(func=cmd_nightly)

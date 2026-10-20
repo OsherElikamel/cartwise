@@ -15,4 +15,5 @@ class User(Base, TimestampMixin):
     name: Mapped[str] = mapped_column(String(100))
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
+    home_locality_code: Mapped[str | None] = mapped_column(String(10))
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

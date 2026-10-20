@@ -35,6 +35,9 @@ class Store(Base, TimestampMixin):
     name: Mapped[str] = mapped_column(String(200))
     address: Mapped[str | None] = mapped_column(String(300))
     city_code: Mapped[str | None] = mapped_column(String(10))
+    # The resolved locality: city_code when the chain publishes one, otherwise
+    # matched from the branch name (Yohananof publishes city code 0).
+    locality_code: Mapped[str | None] = mapped_column(String(10), index=True)
     is_tracked: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
     # Demo branches are what guests compare on; they are never pruned.
     is_demo: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")

@@ -144,11 +144,13 @@ def parse_stores(raw: bytes) -> list[StoreRecord]:
         if not code or not name:
             return
         store_code = normalize_store_code(code)
+        address = _text(store_el, "Address")
         records[store_code] = StoreRecord(
             store_code=store_code,
             sub_chain_code=sub_chain_code,
             name=name,
-            address=_text(store_el, "Address"),
+            # Some chains publish the literal word "unknown" instead of leaving it empty.
+            address=None if address and address.lower() == "unknown" else address,
             city_code=_text(store_el, "City"),
         )
 

@@ -35,6 +35,8 @@ interface LanguageState {
   quantity: (quantity: number, unit: 'unit' | 'kg') => string;
   /** Chain display name in the current language, from its English name or slug. */
   chain: (nameOrSlug: string) => string;
+  /** A city's name in the current language. */
+  place: (locality: { name_he: string; name_en: string }) => string;
 }
 
 function initialLang(): Lang {
@@ -79,6 +81,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         return unit === 'kg' ? `${n} ${t('line.kg')}` : `${n} ×`;
       },
       chain: (name) => CHAIN_BY_NAME[name]?.[lang] ?? name,
+      place: (loc) => (lang === 'he' ? loc.name_he : loc.name_en),
     };
   }, [lang, dir, t]);
 
