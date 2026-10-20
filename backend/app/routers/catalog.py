@@ -20,10 +20,11 @@ def search_stores(
     search: str | None = Query(None, max_length=100, description="Words to find in branch name, address or chain"),
     chain: str | None = Query(None, max_length=30, description="Chain slug, e.g. rami-levy"),
     tracked_only: bool = False,
+    demo_only: bool = Query(False, description="Only the branches guests compare on"),
     limit: int = Query(50, ge=1, le=200),
     db: Session = Depends(get_db),
 ):
-    return catalog_service.search_stores(db, search, chain, tracked_only, limit)
+    return catalog_service.search_stores(db, search, chain, tracked_only, limit, demo_only)
 
 
 @router.get("/products/search", response_model=list[ProductResult])

@@ -6,7 +6,7 @@ from app.core.dependencies import get_optional_user
 from app.core.rate_limit import limiter
 from app.db.database import get_db
 from app.models.user import User
-from app.schemas.basket import BasketComparison, BasketRequest
+from app.schemas.basket import BasketComparison, BasketRequest, RepriceRequest
 from app.services import basket_service, list_service
 
 router = APIRouter(prefix="/api/baskets", tags=["Baskets"])
@@ -27,3 +27,17 @@ def compare(
     if user:
         list_service.record_run(db, user, result)
     return result
+
+
+@router.post("/reprice", response_model=BasketComparison)
+@limiter.limit("30/minute")
+def reprice(
+    request: Request,
+    data: RepriceRequest,
+    db: Session = Depends(get_db),
+    user: User | None = Depends(get_optional_user),
+):
+    """Recalculate totals for explicit product picks (after a confirm or swap). No AI calls."""
+    store_ids = basket_service.allowed_store_ids(db, user, data.store_ids)
+    picks = [basket_service.Pick(**p.model_dump()) for p in data.picks]
+    return basket_service.reprice(db, data.items, store_ids, picks)

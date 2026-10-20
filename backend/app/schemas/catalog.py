@@ -21,6 +21,7 @@ class StoreResponse(BaseModel):
     name: str
     address: str | None
     is_tracked: bool
+    is_demo: bool = False
     is_ready: bool = False
 
 

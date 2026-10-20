@@ -39,6 +39,15 @@ ALTERNATIVES_PER_LINE = 4
 
 
 @dataclass(frozen=True)
+class Pick:
+    store_id: UUID
+    index: int
+    item_code: str
+    confidence: str
+    reason: str
+
+
+@dataclass(frozen=True)
 class Choice:
     product: ProductResult
     confidence: str
@@ -118,6 +127,37 @@ def compare_items(
     if user:
         db.commit()
 
+    return _assemble(stores, items, keys, chosen, candidates, remembered_count)
+
+
+def reprice(
+    db: Session, items: list[ParsedItem], store_ids: list[UUID], picks: list[Pick]
+) -> BasketComparison:
+    """Recompute totals and ranking for explicit product picks. No AI involved.
+
+    Used after the user confirms or swaps a product, so prices always come
+    from the server, never from arithmetic in the browser.
+    """
+    stores = _resolve_stores(db, store_ids)
+    store_by_chain = {chain.slug: store for store, chain in stores}
+    chain_by_store = {store.id: chain for store, chain in stores}
+    keys = [match_service.match_key(item) for item in items]
+
+    valid = [p for p in picks if p.store_id in chain_by_store and 0 <= p.index < len(items)]
+    products = get_products(db, [(p.store_id, p.item_code) for p in valid])
+    chosen = {
+        (p.index, chain_by_store[p.store_id].slug): Choice(products[(p.store_id, p.item_code)], p.confidence, p.reason)
+        for p in valid
+        if (p.store_id, p.item_code) in products
+    }
+    all_pairs = {(i, slug) for i in range(len(items)) for slug in store_by_chain}
+    candidates = _find_candidates(db, items, all_pairs, store_by_chain)
+    remembered = sum(1 for c in chosen.values() if c.confidence == "remembered")
+    return _assemble(stores, items, keys, chosen, candidates, remembered)
+
+
+def _assemble(stores, items, keys, chosen, candidates, remembered_count) -> BasketComparison:
+    """Price every branch's basket and rank branches on the items all of them have."""
     baskets = [_build_basket(store, chain, items, keys, chosen, candidates) for store, chain in stores]
     shared = [i for i in range(len(items)) if all(i not in b.missing for b in baskets)]
     for basket in baskets:

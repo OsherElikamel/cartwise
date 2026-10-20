@@ -26,7 +26,7 @@ def to_store_response(store: Store, chain: Chain) -> StoreResponse:
     return StoreResponse(
         id=store.id, chain_slug=chain.slug, chain_name=chain.name, store_code=store.store_code,
         name=store.name, address=store.address, is_tracked=store.is_tracked,
-        is_ready=store.prices_synced_at is not None,
+        is_demo=store.is_demo, is_ready=store.prices_synced_at is not None,
     )
 
 

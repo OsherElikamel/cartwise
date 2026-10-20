@@ -12,6 +12,20 @@ class BasketRequest(BaseModel):
     store_ids: list[UUID] | None = Field(None, description="One branch per chain (default: all tracked branches)")
 
 
+class PickIn(BaseModel):
+    store_id: UUID
+    index: int = Field(ge=0)
+    item_code: str = Field(min_length=1, max_length=20)
+    confidence: Literal["high", "low", "remembered"]
+    reason: str = Field(max_length=300)
+
+
+class RepriceRequest(BaseModel):
+    items: list[ParsedItem] = Field(min_length=1, max_length=60)
+    store_ids: list[UUID] = Field(min_length=1, max_length=10)
+    picks: list[PickIn] = Field(max_length=600)
+
+
 class Alternative(BaseModel):
     item_code: str
     name: str

@@ -54,3 +54,9 @@ def test_unfollow(client, auth_headers, catalog, loads):
 
 def test_my_stores_requires_sign_in(client):
     assert client.get("/api/me/stores").status_code == 401
+
+
+def test_demo_filter_lists_only_guest_branches(client, catalog):
+    stores = client.get("/api/stores", params={"demo_only": "true"}).json()
+    assert sorted(s["store_code"] for s in stores) == ["709", "92"]
+    assert all(s["is_demo"] for s in stores)

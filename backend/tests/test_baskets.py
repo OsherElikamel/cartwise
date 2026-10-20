@@ -67,3 +67,50 @@ def test_signed_in_user_compares_on_followed_branches(client, auth_headers, cata
 
 def test_empty_list_is_rejected(client, catalog, fake_llm):
     assert compare(client, "  \n ").status_code == 400
+
+
+def picks_from(body):
+    return [
+        {"store_id": s["store_id"], "index": line["index"], "item_code": line["item_code"],
+         "confidence": line["confidence"], "reason": line["reason"]}
+        for s in body["stores"] for line in s["lines"] if line["item_code"]
+    ]
+
+
+def test_reprice_applies_a_swap_without_any_ai_call(client, catalog, fake_llm):
+    body = compare(client, "חלב 3%").json()
+    calls = (fake_llm.parse_calls, fake_llm.match_calls)
+    picks = picks_from(body)
+    shufersal = next(s for s in body["stores"] if s["chain_slug"] == "shufersal")
+    swap_to = shufersal["lines"][0]["alternatives"][0]
+    for p in picks:
+        if p["store_id"] == shufersal["store_id"]:
+            p.update(item_code=swap_to["item_code"], confidence="high", reason="You chose this")
+
+    res = client.post("/api/baskets/reprice", json={
+        "items": body["items"], "store_ids": [s["store_id"] for s in body["stores"]], "picks": picks,
+    })
+    assert res.status_code == 200
+    stores = by_chain(res.json())
+    assert stores["shufersal"]["lines"][0]["item_code"] == swap_to["item_code"]
+    assert Decimal(stores["shufersal"]["shared_total"]) == Decimal(swap_to["price"])
+    assert (fake_llm.parse_calls, fake_llm.match_calls) == calls
+
+
+def test_reprice_ignores_products_not_sold_at_the_branch(client, catalog, fake_llm):
+    body = compare(client, "חלב 3%").json()
+    picks = picks_from(body)
+    for p in picks:
+        p["item_code"] = "9999999999999"
+    res = client.post("/api/baskets/reprice", json={
+        "items": body["items"], "store_ids": [s["store_id"] for s in body["stores"]], "picks": picks,
+    })
+    assert all(s["missing"] == [0] for s in res.json()["stores"])
+
+
+def test_guest_cannot_reprice_on_other_branches(client, catalog, fake_llm):
+    body = compare(client, "חלב 3%").json()
+    res = client.post("/api/baskets/reprice", json={
+        "items": body["items"], "store_ids": [str(catalog["rami_levy_other"].id)], "picks": [],
+    })
+    assert res.status_code == 400

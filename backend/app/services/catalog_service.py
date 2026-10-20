@@ -34,13 +34,15 @@ def list_chains(db: Session) -> list[ChainResponse]:
 
 
 def search_stores(
-    db: Session, search: str | None, chain_slug: str | None, tracked_only: bool, limit: int
+    db: Session, search: str | None, chain_slug: str | None, tracked_only: bool, limit: int, demo_only: bool = False
 ) -> list[StoreResponse]:
     query = select(Store, Chain).join(Chain)
     if chain_slug:
         query = query.where(Chain.slug == chain_slug)
     if tracked_only:
         query = query.where(Store.is_tracked.is_(True))
+    if demo_only:
+        query = query.where(Store.is_demo.is_(True))
     # Every word must appear in the branch name, address or chain name: a city
     # filter can't work because some chains publish no city codes at all.
     for word in (search or "").split():
@@ -54,7 +56,7 @@ def search_stores(
         StoreResponse(
             id=store.id, chain_slug=chain.slug, chain_name=chain.name, store_code=store.store_code,
             name=store.name, address=store.address, is_tracked=store.is_tracked,
-            is_ready=store.prices_synced_at is not None,
+            is_demo=store.is_demo, is_ready=store.prices_synced_at is not None,
         )
         for store, chain in rows
     ]
