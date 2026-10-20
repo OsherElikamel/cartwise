@@ -1,5 +1,12 @@
 [
 {
+"code": "10",
+"name_he": "תירוש",
+"name_en": "Tirosh",
+"lat": 31.75084,
+"lon": 34.8861
+},
+{
 "code": "1015",
 "name_he": "מבשרת ציון",
 "name_en": "Mevasseret Ziyyon",
@@ -26,6 +33,13 @@
 "name_en": "Haruzim",
 "lat": 32.2275,
 "lon": 34.86411
+},
+{
+"code": "103",
+"name_he": "תל עדשים",
+"name_en": "Tel Adashim",
+"lat": 32.6563,
+"lon": 35.30241
 },
 {
 "code": "1031",
@@ -70,6 +84,20 @@
 "lon": 34.93809
 },
 {
+"code": "1044",
+"name_he": "יעף",
+"name_en": "Ye'Af",
+"lat": 32.26834,
+"lon": 34.96592
+},
+{
+"code": "1045",
+"name_he": "שתולה",
+"name_en": "Shetula",
+"lat": 33.08476,
+"lon": 35.31431
+},
+{
 "code": "1046",
 "name_he": "אוהד",
 "name_en": "Ohad",
@@ -91,6 +119,13 @@
 "lon": 34.91654
 },
 {
+"code": "1051",
+"name_he": "תלמי אליהו",
+"name_en": "Talme Eliyyahu",
+"lat": 31.23003,
+"lon": 34.42948
+},
+{
 "code": "1052",
 "name_he": "קטורה",
 "name_en": "Qetura",
@@ -103,6 +138,13 @@
 "name_en": "En Hazeva",
 "lat": 30.79828,
 "lon": 35.2464
+},
+{
+"code": "1054",
+"name_he": "תל שבע",
+"name_en": "Tel Sheva",
+"lat": 31.24565,
+"lon": 34.85777
 },
 {
 "code": "1056",
@@ -166,6 +208,13 @@
 "name_en": "Amirim",
 "lat": 32.9375,
 "lon": 35.45
+},
+{
+"code": "1065",
+"name_he": "זמרת",
+"name_en": "Zimrat",
+"lat": 32.48939,
+"lon": 35.50051
 },
 {
 "code": "1066",
@@ -238,6 +287,13 @@
 "lon": 34.87628
 },
 {
+"code": "1079",
+"name_he": "צפרירים",
+"name_en": "Zafririm",
+"lat": 31.66005,
+"lon": 34.94438
+},
+{
 "code": "1080",
 "name_he": "מבועים",
 "name_en": "Mabbu'Im",
@@ -257,6 +313,13 @@
 "name_en": "Ma'Galim",
 "lat": 31.3974,
 "lon": 34.59832
+},
+{
+"code": "1083",
+"name_he": "תושיה",
+"name_en": "Tushiyya",
+"lat": 31.43324,
+"lon": 34.54118
 },
 {
 "code": "1084",
@@ -301,6 +364,13 @@
 "lon": 34.71451
 },
 {
+"code": "1102",
+"name_he": "צוקי ים",
+"name_en": "Shoshannat Haamaqim(",
+"lat": 32.36135,
+"lon": 34.85868
+},
+{
 "code": "1103",
 "name_he": "גני הדר",
 "name_en": "Ganne Hadar",
@@ -336,6 +406,27 @@
 "lon": 35.26435
 },
 {
+"code": "1111",
+"name_he": "צופיה",
+"name_en": "Zofiyya",
+"lat": 32.22164,
+"lon": 35.15943
+},
+{
+"code": "1112",
+"name_he": "יודפת",
+"name_en": "Yodefat",
+"lat": 32.83724,
+"lon": 35.27155
+},
+{
+"code": "1113",
+"name_he": "צור הדסה",
+"name_en": "Zur Hadassa",
+"lat": 31.71569,
+"lon": 35.09483
+},
+{
 "code": "1114",
 "name_he": "שריגים (לי-און)",
 "name_en": "Li-On",
@@ -348,6 +439,13 @@
 "name_en": "Avivim",
 "lat": 33.08868,
 "lon": 35.47294
+},
+{
+"code": "1117",
+"name_he": "יעל",
+"name_en": "Ya'El",
+"lat": 32.55192,
+"lon": 35.3079
 },
 {
 "code": "112",
@@ -427,11 +525,39 @@
 "lon": 35.67819
 },
 {
+"code": "1133",
+"name_he": "ורדון",
+"name_en": "Wardon",
+"lat": 31.66353,
+"lon": 34.78219
+},
+{
+"code": "1134",
+"name_he": "יד השמונה",
+"name_en": "Yad Hashemona",
+"lat": 31.80947,
+"lon": 35.0902
+},
+{
+"code": "1136",
+"name_he": "צוחר",
+"name_en": "Zohar",
+"lat": 31.2361,
+"lon": 34.42707
+},
+{
 "code": "1137",
 "name_he": "קרית יערים",
 "name_en": "Qiryat Ye'Arim",
 "lat": 31.80351,
 "lon": 35.10125
+},
+{
+"code": "1138",
+"name_he": "יעד",
+"name_en": "Ya'Ad",
+"lat": 32.87826,
+"lon": 35.24357
 },
 {
 "code": "1139",
@@ -462,6 +588,13 @@
 "lon": 35.12115
 },
 {
+"code": "1144",
+"name_he": "ידידה",
+"name_en": "Yedida",
+"lat": 32.79237,
+"lon": 34.98904
+},
+{
 "code": "1145",
 "name_he": "אלומה",
 "name_en": "Alumma",
@@ -483,6 +616,13 @@
 "lon": 35.32331
 },
 {
+"code": "1148",
+"name_he": "צור נתן",
+"name_en": "Zur Natan",
+"lat": 32.24071,
+"lon": 35.01388
+},
+{
 "code": "1149",
 "name_he": "עזר",
 "name_en": "Ezer",
@@ -495,6 +635,13 @@
 "name_en": "Hofit",
 "lat": 32.38566,
 "lon": 34.87555
+},
+{
+"code": "1150",
+"name_he": "צופר",
+"name_en": "Zofar",
+"lat": 30.55862,
+"lon": 35.18014
 },
 {
 "code": "1151",
@@ -544,6 +691,20 @@
 "name_en": "Ahawa",
 "lat": 32.78266,
 "lon": 35.54123
+},
+{
+"code": "1158",
+"name_he": "יהל",
+"name_en": "Yahel",
+"lat": 30.08194,
+"lon": 35.12877
+},
+{
+"code": "1160",
+"name_he": "שכניה",
+"name_en": "Shekhanya",
+"lat": 32.84873,
+"lon": 35.24698
 },
 {
 "code": "1161",
@@ -609,6 +770,13 @@
 "lon": 35.3585
 },
 {
+"code": "1172",
+"name_he": "תובל",
+"name_en": "Tuval",
+"lat": 32.92907,
+"lon": 35.24479
+},
+{
 "code": "1173",
 "name_he": "לפידות",
 "name_en": "Lappidot",
@@ -637,6 +805,13 @@
 "lon": 35.18464
 },
 {
+"code": "1177",
+"name_he": "טללים",
+"name_en": "Telalim",
+"lat": 30.99191,
+"lon": 34.77007
+},
+{
 "code": "1178",
 "name_he": "מורשת",
 "name_en": "Moreshet",
@@ -649,6 +824,20 @@
 "name_en": "Qoranit",
 "lat": 32.84363,
 "lon": 35.25132
+},
+{
+"code": "1180",
+"name_he": "צביה",
+"name_en": "Zviyya",
+"lat": 32.89092,
+"lon": 35.3312
+},
+{
+"code": "1181",
+"name_he": "טל-אל",
+"name_en": "Tal-El",
+"lat": 32.92786,
+"lon": 35.18209
 },
 {
 "code": "1182",
@@ -733,6 +922,13 @@
 "name_en": "Mahane Yattir",
 "lat": null,
 "lon": null
+},
+{
+"code": "1197",
+"name_he": "נאות סמדר",
+"name_en": "Shizzafon",
+"lat": 30.04864,
+"lon": 35.02574
 },
 {
 "code": "1198",
@@ -840,6 +1036,20 @@
 "lon": 35.52425
 },
 {
+"code": "1213",
+"name_he": "צבעון",
+"name_en": "Ziv'On",
+"lat": 33.02551,
+"lon": 35.41591
+},
+{
+"code": "1214",
+"name_he": "טפחות",
+"name_en": "Tefahot",
+"lat": 32.86888,
+"lon": 35.42298
+},
+{
 "code": "1219",
 "name_he": "גורנות הגליל",
 "name_en": "Gornot Hagalil",
@@ -859,6 +1069,13 @@
 "name_en": "Abbirim",
 "lat": 33.03865,
 "lon": 35.28714
+},
+{
+"code": "1221",
+"name_he": "צורית",
+"name_en": "Zurit",
+"lat": 32.90229,
+"lon": 35.25346
 },
 {
 "code": "1222",
@@ -889,6 +1106,20 @@
 "lon": 35.46343
 },
 {
+"code": "1226",
+"name_he": "יובלים",
+"name_en": "Yuvalim",
+"lat": 32.87751,
+"lon": 35.27056
+},
+{
+"code": "1227",
+"name_he": "יתד",
+"name_en": "Yated",
+"lat": 31.20665,
+"lon": 34.32494
+},
+{
 "code": "1228",
 "name_he": "רקפת",
 "name_en": "Raqefet",
@@ -917,6 +1148,20 @@
 "lon": 34.35287
 },
 {
+"code": "1232",
+"name_he": "יבול",
+"name_en": "Yevul",
+"lat": 31.18874,
+"lon": 34.31761
+},
+{
+"code": "1233",
+"name_he": "שקף",
+"name_en": "Sheqef",
+"lat": 31.51567,
+"lon": 34.9378
+},
+{
 "code": "1234",
 "name_he": "קבועה (שבט)",
 "name_en": "Qabbo'A",
@@ -924,11 +1169,32 @@
 "lon": null
 },
 {
+"code": "1235",
+"name_he": "שורשים",
+"name_en": "Shorashim",
+"lat": 32.89239,
+"lon": 35.25794
+},
+{
 "code": "1236",
 "name_he": "נירית",
 "name_en": "Nirit",
 "lat": 32.14661,
 "lon": 34.9844
+},
+{
+"code": "1237",
+"name_he": "תלמי יוסף",
+"name_en": "Talme Yosef",
+"lat": 31.19972,
+"lon": 34.3618
+},
+{
+"code": "1238",
+"name_he": "סופה",
+"name_en": "Sufa",
+"lat": 31.23651,
+"lon": 34.34264
 },
 {
 "code": "1239",
@@ -964,6 +1230,13 @@
 "name_en": "Qazir",
 "lat": 32.48863,
 "lon": 35.10169
+},
+{
+"code": "1244",
+"name_he": "תמרת",
+"name_en": "Timrat",
+"lat": 32.70381,
+"lon": 35.22531
 },
 {
 "code": "1245",
@@ -1106,6 +1379,13 @@
 "lon": 34.92047
 },
 {
+"code": "1265",
+"name_he": "שומריה",
+"name_en": "Shomeriyya",
+"lat": 31.43177,
+"lon": 34.88578
+},
+{
 "code": "1266",
 "name_he": "שחרות",
 "name_en": "Shaharut",
@@ -1204,6 +1484,13 @@
 "lon": 35.42154
 },
 {
+"code": "1283",
+"name_he": "תל תאומים",
+"name_en": "Tel Te'Omim",
+"lat": 32.44242,
+"lon": 35.49645
+},
+{
 "code": "1284",
 "name_he": "נופית",
 "name_en": "Nofit",
@@ -1239,6 +1526,13 @@
 "lon": 35.24513
 },
 {
+"code": "1290",
+"name_he": "זמר",
+"name_en": "Zemer",
+"lat": 32.36221,
+"lon": 35.03251
+},
+{
 "code": "1291",
 "name_he": "כמהין",
 "name_en": "Kemehin",
@@ -1265,6 +1559,13 @@
 "name_en": "Or Haganuz",
 "lat": 33.00508,
 "lon": 35.44751
+},
+{
+"code": "1295",
+"name_he": "יאנוח-ג'ת",
+"name_en": "Yanuh-Jat",
+"lat": 32.98367,
+"lon": 35.25191
 },
 {
 "code": "1296",
@@ -1505,6 +1806,13 @@
 "lon": 34.77591
 },
 {
+"code": "1337",
+"name_he": "שמשית",
+"name_en": "Shimshit",
+"lat": 32.73282,
+"lon": 35.24724
+},
+{
 "code": "1338",
 "name_he": "כדיתה",
 "name_en": "Kaddita",
@@ -1517,6 +1825,13 @@
 "name_en": "Al-Azy",
 "lat": 31.7185,
 "lon": 34.81387
+},
+{
+"code": "134",
+"name_he": "יפעת",
+"name_en": "Yif'At",
+"lat": 32.6772,
+"lon": 35.22387
 },
 {
 "code": "1340",
@@ -1554,6 +1869,20 @@
 "lon": 34.75922
 },
 {
+"code": "1345",
+"name_he": "צור יצחק",
+"name_en": "Zur Yizhaq",
+"lat": 32.24124,
+"lon": 34.99838
+},
+{
+"code": "1346",
+"name_he": "תראבין א-צאנע(ישוב)",
+"name_en": "Tarabin As-Sani",
+"lat": 31.34285,
+"lon": 34.73555
+},
+{
 "code": "1347",
 "name_he": "קצר א-סר",
 "name_en": "",
@@ -1580,6 +1909,13 @@
 "name_en": "Ramat Dawid",
 "lat": 32.67828,
 "lon": 35.20303
+},
+{
+"code": "1358",
+"name_he": "אום בטין",
+"name_en": "Umm Batin",
+"lat": 31.27576,
+"lon": 34.88387
 },
 {
 "code": "1359",
@@ -1615,6 +1951,13 @@
 "name_en": "Bene Nezarim",
 "lat": 31.14099,
 "lon": 34.31473
+},
+{
+"code": "1364",
+"name_he": "שלומית",
+"name_en": "Shlomit",
+"lat": 31.16853,
+"lon": 34.30358
 },
 {
 "code": "1365",
@@ -1706,6 +2049,13 @@
 "name_en": "Shave Darom",
 "lat": 31.4656,
 "lon": 34.63583
+},
+{
+"code": "1378",
+"name_he": "שיזף",
+"name_en": "Shezaf",
+"lat": 31.00165,
+"lon": 34.76548
 },
 {
 "code": "139",
@@ -1897,6 +2247,13 @@
 "lon": 34.74421
 },
 {
+"code": "163",
+"name_he": "תימורים",
+"name_en": "Timmorim",
+"lat": 31.71609,
+"lon": 34.76134
+},
+{
 "code": "164",
 "name_he": "מלאה",
 "name_en": "Mele'A",
@@ -2002,6 +2359,13 @@
 "lon": 35.21793
 },
 {
+"code": "183",
+"name_he": "ירקונה",
+"name_en": "Yarqona",
+"lat": 32.14598,
+"lon": 34.8988
+},
+{
 "code": "184",
 "name_he": "רמת הכובש",
 "name_en": "Ramat Hakovesh",
@@ -2093,6 +2457,13 @@
 "lon": 34.90469
 },
 {
+"code": "198",
+"name_he": "צופית",
+"name_en": "Zofit",
+"lat": 32.19183,
+"lon": 34.9231
+},
+{
 "code": "199",
 "name_he": "אשדות יעקב (איחוד)",
 "name_en": "Ashdot Ya'Aqov(Ihud)",
@@ -2105,6 +2476,20 @@
 "name_en": "Bet Yannay",
 "lat": 32.37753,
 "lon": 34.86296
+},
+{
+"code": "2002",
+"name_he": "תנובות",
+"name_en": "Tenuvot",
+"lat": 32.3052,
+"lon": 34.96207
+},
+{
+"code": "2003",
+"name_he": "תלמי אלעזר",
+"name_en": "Talme El'Azar",
+"lat": 32.44317,
+"lon": 34.97373
 },
 {
 "code": "2006",
@@ -2121,11 +2506,25 @@
 "lon": 34.99382
 },
 {
+"code": "2009",
+"name_he": "יובל",
+"name_en": "Yuval",
+"lat": 32.93442,
+"lon": 35.08573
+},
+{
 "code": "2010",
 "name_he": "כפר בן נון",
 "name_en": "Kefar Bin Nun",
 "lat": 31.86247,
 "lon": 34.94719
+},
+{
+"code": "2011",
+"name_he": "ינון",
+"name_en": "Yinnon",
+"lat": 31.74292,
+"lon": 34.77952
 },
 {
 "code": "2012",
@@ -2189,6 +2588,20 @@
 "name_en": "Lahav",
 "lat": 31.37942,
 "lon": 34.87011
+},
+{
+"code": "2024",
+"name_he": "אום אל-קוטוף",
+"name_en": "Umm Al-Qutuf",
+"lat": 32.46806,
+"lon": 35.05889
+},
+{
+"code": "2026",
+"name_he": "ירדנה",
+"name_en": "Yardena",
+"lat": 32.56444,
+"lon": 35.56458
 },
 {
 "code": "2029",
@@ -2310,6 +2723,13 @@
 "lon": 34.92727
 },
 {
+"code": "2050",
+"name_he": "תלמי ביל\"ו",
+"name_en": "Talme Bilu",
+"lat": 31.4377,
+"lon": 34.64548
+},
+{
 "code": "2051",
 "name_he": "רווחה",
 "name_en": "Rewaha",
@@ -2373,11 +2793,32 @@
 "lon": 34.63509
 },
 {
+"code": "2061",
+"name_he": "תדהר",
+"name_en": "Tidhar",
+"lat": 31.379,
+"lon": 34.62845
+},
+{
+"code": "2062",
+"name_he": "תאשור",
+"name_en": "Te'Ashur",
+"lat": 31.37187,
+"lon": 34.64371
+},
+{
 "code": "2063",
 "name_he": "דישון",
 "name_en": "Dishon",
 "lat": 33.08132,
 "lon": 35.51752
+},
+{
+"code": "2064",
+"name_he": "זרועה",
+"name_en": "Zeru'A",
+"lat": 31.45938,
+"lon": 34.62351
 },
 {
 "code": "207",
@@ -2471,6 +2912,13 @@
 "lon": 35.00989
 },
 {
+"code": "224",
+"name_he": "שושנת העמקים",
+"name_en": "Shoshannat Haamaqim",
+"lat": 32.35431,
+"lon": 34.85672
+},
+{
 "code": "225",
 "name_he": "גן השומרון",
 "name_en": "Gan Hashomeron",
@@ -2504,6 +2952,20 @@
 "name_en": "Qiryat Tiv'On",
 "lat": 32.71615,
 "lon": 35.12684
+},
+{
+"code": "232",
+"name_he": "שפיים",
+"name_en": "Shefayim",
+"lat": 32.21692,
+"lon": 34.82482
+},
+{
+"code": "233",
+"name_he": "כפר ידידיה",
+"name_en": "Yedidya",
+"lat": 32.34494,
+"lon": 34.90002
 },
 {
 "code": "234",
@@ -2553,6 +3015,13 @@
 "name_en": "Or Yehuda",
 "lat": 32.027,
 "lon": 34.86299
+},
+{
+"code": "241",
+"name_he": "יקנעם (מושבה)",
+"name_en": "Yoqne'Am(Moshava)",
+"lat": 32.65662,
+"lon": 35.11361
 },
 {
 "code": "242",
@@ -2765,6 +3234,13 @@
 "lon": 34.81978
 },
 {
+"code": "268",
+"name_he": "טירת צבי",
+"name_en": "Tirat Zevi",
+"lat": 32.42186,
+"lon": 35.52797
+},
+{
 "code": "269",
 "name_he": "מולדת",
 "name_en": "Moledet",
@@ -2784,6 +3260,13 @@
 "name_en": "En Hashofet",
 "lat": 32.59577,
 "lon": 35.10004
+},
+{
+"code": "2710",
+"name_he": "אום אל-פחם",
+"name_en": "Umm Al-Fahm",
+"lat": 32.51584,
+"lon": 35.15249
 },
 {
 "code": "272",
@@ -2821,11 +3304,25 @@
 "lon": 34.83523
 },
 {
+"code": "2742",
+"name_he": "זבארגה (שבט)",
+"name_en": "Zabarga",
+"lat": null,
+"lon": null
+},
+{
 "code": "276",
 "name_he": "צור משה",
 "name_en": "Zur Moshe",
 "lat": 32.29781,
 "lon": 34.91355
+},
+{
+"code": "278",
+"name_he": "אושה",
+"name_en": "Usha",
+"lat": 32.79552,
+"lon": 35.1144
 },
 {
 "code": "28",
@@ -2884,6 +3381,13 @@
 "lon": 35.11159
 },
 {
+"code": "287",
+"name_he": "תל יצחק",
+"name_en": "Tel Yizhaq",
+"lat": 32.256,
+"lon": 34.86934
+},
+{
 "code": "288",
 "name_he": "בית יהושע",
 "name_en": "Bet Yehoshua",
@@ -2896,6 +3400,13 @@
 "name_en": "En Hamifraz",
 "lat": 32.90362,
 "lon": 35.09611
+},
+{
+"code": "29",
+"name_he": "יסוד המעלה",
+"name_en": "Yesud Hama'Ala",
+"lat": 33.05738,
+"lon": 35.60302
 },
 {
 "code": "290",
@@ -3360,6 +3871,13 @@
 "lon": 35.16036
 },
 {
+"code": "3558",
+"name_he": "תומר",
+"name_en": "Tomer",
+"lat": 32.01869,
+"lon": 35.4392
+},
+{
 "code": "356",
 "name_he": "הגושרים",
 "name_en": "Hagosherim",
@@ -3381,6 +3899,13 @@
 "lon": 35.14255
 },
 {
+"code": "3563",
+"name_he": "תקוע",
+"name_en": "Teqoa",
+"lat": 31.65328,
+"lon": 35.22933
+},
+{
 "code": "3564",
 "name_he": "כוכב השחר",
 "name_en": "Kokhav Hashahar",
@@ -3393,6 +3918,13 @@
 "name_en": "Rimmonim",
 "lat": 31.93451,
 "lon": 35.34011
+},
+{
+"code": "3566",
+"name_he": "יפית",
+"name_en": "Yafit",
+"lat": 32.06232,
+"lon": 35.4743
 },
 {
 "code": "3567",
@@ -3486,6 +4018,13 @@
 "lon": 35.33163
 },
 {
+"code": "358",
+"name_he": "יד מרדכי",
+"name_en": "Yad Mordekhay",
+"lat": 31.58868,
+"lon": 34.559
+},
+{
 "code": "359",
 "name_he": "ניצנים",
 "name_en": "Nizzanim",
@@ -3561,6 +4100,13 @@
 "name_en": "Gilgal",
 "lat": 31.99973,
 "lon": 35.44521
+},
+{
+"code": "3607",
+"name_he": "ייט\"ב",
+"name_en": "Yitav",
+"lat": 31.94753,
+"lon": 35.42415
 },
 {
 "code": "3608",
@@ -3675,6 +4221,13 @@
 "lon": 35.33521
 },
 {
+"code": "3639",
+"name_he": "ורד יריחו",
+"name_en": "Wered Yeriho",
+"lat": 31.82619,
+"lon": 35.43242
+},
+{
 "code": "364",
 "name_he": "כפר אוריה",
 "name_en": "Kefar Uriyya",
@@ -3687,6 +4240,13 @@
 "name_en": "Qarne Shomeron",
 "lat": 32.17098,
 "lon": 35.08924
+},
+{
+"code": "3641",
+"name_he": "שילה",
+"name_en": "Shilo",
+"lat": 32.05522,
+"lon": 35.29949
 },
 {
 "code": "3642",
@@ -3722,6 +4282,13 @@
 "name_en": "Nahal Hemdat",
 "lat": 32.25129,
 "lon": 35.52556
+},
+{
+"code": "3647",
+"name_he": "יקיר",
+"name_en": "Yaqir",
+"lat": 32.14938,
+"lon": 35.11452
 },
 {
 "code": "3648",
@@ -3920,6 +4487,13 @@
 "lon": 35.11876
 },
 {
+"code": "3719",
+"name_he": "תלם",
+"name_en": "Telem",
+"lat": 31.56346,
+"lon": 35.03101
+},
+{
 "code": "372",
 "name_he": "רמות נפתלי",
 "name_en": "Ramot Naftali",
@@ -3997,6 +4571,13 @@
 "lon": 35.49446
 },
 {
+"code": "3743",
+"name_he": "טנא",
+"name_en": "Tene",
+"lat": 31.3757,
+"lon": 34.95725
+},
+{
 "code": "3744",
 "name_he": "ברוכין",
 "name_en": "Brukhin",
@@ -4032,6 +4613,13 @@
 "lon": 35.02862
 },
 {
+"code": "3749",
+"name_he": "יצהר",
+"name_en": "Yizhar",
+"lat": 32.16861,
+"lon": 35.23377
+},
+{
 "code": "375",
 "name_he": "מגל",
 "name_en": "Maggal",
@@ -4065,6 +4653,13 @@
 "name_en": "Asefar",
 "lat": 31.58587,
 "lon": 35.18779
+},
+{
+"code": "3756",
+"name_he": "סוסיה",
+"name_en": "Suseya",
+"lat": 31.39195,
+"lon": 35.11354
 },
 {
 "code": "3757",
@@ -4221,6 +4816,13 @@
 "lon": 35.10115
 },
 {
+"code": "3784",
+"name_he": "שמעה",
+"name_en": "Shim'A",
+"lat": 31.3876,
+"lon": 35.01331
+},
+{
 "code": "3785",
 "name_he": "משכיות",
 "name_en": "Maskiyyot",
@@ -4242,6 +4844,13 @@
 "lon": 35.06465
 },
 {
+"code": "3788",
+"name_he": "טלמון",
+"name_en": "Talmon",
+"lat": 31.9394,
+"lon": 35.1323
+},
+{
 "code": "379",
 "name_he": "גאולים",
 "name_en": "Ge'Ulim",
@@ -4254,6 +4863,13 @@
 "name_en": "Nofim",
 "lat": 32.15527,
 "lon": 35.10087
+},
+{
+"code": "3791",
+"name_he": "צופים",
+"name_en": "Zufin",
+"lat": 32.1982,
+"lon": 35.00965
 },
 {
 "code": "3793",
@@ -4296,6 +4912,13 @@
 "name_en": "Lahavot Habashan",
 "lat": 33.14062,
 "lon": 35.64625
+},
+{
+"code": "3815",
+"name_he": "תל ציון",
+"name_en": "Tel Tsiyon",
+"lat": 31.87963,
+"lon": 35.23818
 },
 {
 "code": "382",
@@ -4431,6 +5054,20 @@
 "lon": 35.25908
 },
 {
+"code": "3872",
+"name_he": "שבות רחל",
+"name_en": "Shvut Rahel",
+"lat": 32.05471,
+"lon": 35.31148
+},
+{
+"code": "3873",
+"name_he": "טל מנשה",
+"name_en": "Tal Menashe",
+"lat": 32.48345,
+"lon": 35.16043
+},
+{
 "code": "3874",
 "name_he": "עדי עד",
 "name_en": "Ade Ad",
@@ -4457,6 +5094,13 @@
 "name_en": "Neve Gadid",
 "lat": 32.125,
 "lon": 35.48826
+},
+{
+"code": "3878",
+"name_he": "תמרה",
+"name_en": "Tmara",
+"lat": 32.63435,
+"lon": 35.40425
 },
 {
 "code": "3879",
@@ -4541,6 +5185,13 @@
 "name_en": "Kedem Arava",
 "lat": 31.80708,
 "lon": 35.49923
+},
+{
+"code": "3896",
+"name_he": "יונדב",
+"name_en": "Yonadav",
+"lat": 31.38554,
+"lon": 35.00372
 },
 {
 "code": "3897",
@@ -4641,6 +5292,13 @@
 "lon": 35.27234
 },
 {
+"code": "3910",
+"name_he": "שירה",
+"name_en": "Shira",
+"lat": 31.96862,
+"lon": 34.76278
+},
+{
 "code": "392",
 "name_he": "קדמה",
 "name_en": "Qedma",
@@ -4667,6 +5325,13 @@
 "name_en": "Gal'On",
 "lat": 31.63406,
 "lon": 34.84903
+},
+{
+"code": "394",
+"name_he": "שובל",
+"name_en": "Shoval",
+"lat": 31.41432,
+"lon": 34.74377
 },
 {
 "code": "395",
@@ -4765,6 +5430,13 @@
 "name_en": "Qeshet",
 "lat": 32.98073,
 "lon": 35.80859
+},
+{
+"code": "4007",
+"name_he": "יונתן",
+"name_en": "Yonatan",
+"lat": 32.93847,
+"lon": 35.79496
 },
 {
 "code": "4008",
@@ -4893,6 +5565,13 @@
 "lon": null
 },
 {
+"code": "403",
+"name_he": "אורים",
+"name_en": "Urim",
+"lat": 31.30417,
+"lon": 34.52198
+},
+{
 "code": "4035",
 "name_he": "נמרוד",
 "name_en": "Nimrod",
@@ -4928,6 +5607,13 @@
 "lon": 35.59658
 },
 {
+"code": "409",
+"name_he": "יחיעם",
+"name_en": "Yehi'Am",
+"lat": 32.99671,
+"lon": 35.22045
+},
+{
 "code": "41",
 "name_he": "אליכין",
 "name_en": "Elyakhin",
@@ -4956,6 +5642,13 @@
 "lon": 34.86171
 },
 {
+"code": "413",
+"name_he": "צאלים",
+"name_en": "Ze'Elim",
+"lat": 31.20366,
+"lon": 34.53384
+},
+{
 "code": "414",
 "name_he": "קלחים",
 "name_en": "Qelahim",
@@ -4963,11 +5656,25 @@
 "lon": 34.6781
 },
 {
+"code": "415",
+"name_he": "שוקדה",
+"name_en": "Shoqeda",
+"lat": 31.42167,
+"lon": 34.52538
+},
+{
 "code": "416",
 "name_he": "מעין ברוך",
 "name_en": "Ma'Yan Barukh",
 "lat": 33.23985,
 "lon": 35.60886
+},
+{
+"code": "417",
+"name_he": "יקום",
+"name_en": "Yaqum",
+"lat": 32.24857,
+"lon": 34.84209
 },
 {
 "code": "418",
@@ -5152,6 +5859,27 @@
 "lon": 35.47754
 },
 {
+"code": "439",
+"name_he": "שלוחות",
+"name_en": "Sheluhot",
+"lat": 32.47148,
+"lon": 35.48083
+},
+{
+"code": "44",
+"name_he": "זוהר",
+"name_en": "Zohar",
+"lat": 31.59565,
+"lon": 34.6937
+},
+{
+"code": "440",
+"name_he": "יסודות",
+"name_en": "Yesodot",
+"lat": 31.81493,
+"lon": 34.86617
+},
+{
 "code": "442",
 "name_he": "גדעונה",
 "name_en": "Gid'Ona",
@@ -5178,6 +5906,13 @@
 "name_en": "Ramot Menashe",
 "lat": 32.59788,
 "lon": 35.05765
+},
+{
+"code": "446",
+"name_he": "אודים",
+"name_en": "Udim",
+"lat": 32.26477,
+"lon": 34.84693
 },
 {
 "code": "447",
@@ -5229,6 +5964,20 @@
 "lon": 35.7962
 },
 {
+"code": "452",
+"name_he": "יזרעאל",
+"name_en": "Yizre'El",
+"lat": 32.56235,
+"lon": 35.32134
+},
+{
+"code": "453",
+"name_he": "יפתח",
+"name_en": "Yiftah",
+"lat": 33.12861,
+"lon": 35.55195
+},
+{
 "code": "454",
 "name_he": "סער",
 "name_en": "Sa'Ar",
@@ -5243,6 +5992,13 @@
 "lon": 35.69297
 },
 {
+"code": "456",
+"name_he": "שורש",
+"name_en": "Shoresh",
+"lat": 31.79748,
+"lon": 35.06513
+},
+{
 "code": "457",
 "name_he": "גזית",
 "name_en": "Gazit",
@@ -5250,11 +6006,25 @@
 "lon": 35.44674
 },
 {
+"code": "46",
+"name_he": "יבנאל",
+"name_en": "Yavne'El",
+"lat": 32.70546,
+"lon": 35.50526
+},
+{
 "code": "460",
 "name_he": "רמת רזיאל",
 "name_en": "Ramat Razi'El",
 "lat": 31.77366,
 "lon": 35.07376
+},
+{
+"code": "462",
+"name_he": "טל שחר",
+"name_en": "Tal Shahar",
+"lat": 31.80506,
+"lon": 34.90221
 },
 {
 "code": "463",
@@ -5269,6 +6039,13 @@
 "name_en": "Har'El",
 "lat": 31.80938,
 "lon": 34.94908
+},
+{
+"code": "465",
+"name_he": "צובה",
+"name_en": "Zova",
+"lat": 31.78268,
+"lon": 35.1207
 },
 {
 "code": "466",
@@ -5432,6 +6209,27 @@
 "lon": 35.34696
 },
 {
+"code": "497",
+"name_he": "טייבה (בעמק)",
+"name_en": "Tayibe(Baemeq)",
+"lat": 32.60321,
+"lon": 35.4448
+},
+{
+"code": "498",
+"name_he": "טורעאן",
+"name_en": "Tur'An",
+"lat": 32.77689,
+"lon": 35.37403
+},
+{
+"code": "499",
+"name_he": "יפיע",
+"name_en": "Yafi",
+"lat": 32.68659,
+"lon": 35.27721
+},
+{
 "code": "5000",
 "name_he": "תל אביב - יפו",
 "name_en": "Tel Aviv - Yafo",
@@ -5579,6 +6377,27 @@
 "lon": 35.3422
 },
 {
+"code": "526",
+"name_he": "סולם",
+"name_en": "Sulam",
+"lat": 32.60619,
+"lon": 35.33389
+},
+{
+"code": "527",
+"name_he": "שזור",
+"name_en": "Shezor",
+"lat": 32.93273,
+"lon": 35.3535
+},
+{
+"code": "528",
+"name_he": "עוזייר",
+"name_en": "Uzeir",
+"lat": 32.80763,
+"lon": 35.265
+},
+{
 "code": "529",
 "name_he": "אעבלין",
 "name_en": "I'Billin",
@@ -5691,6 +6510,13 @@
 "lon": 35.40101
 },
 {
+"code": "547",
+"name_he": "טמרה (יזרעאל)",
+"name_en": "Tamra (Yizre'El)",
+"lat": 32.63435,
+"lon": 35.40425
+},
+{
 "code": "549",
 "name_he": "גנות הדר",
 "name_en": "Gannot Hadar",
@@ -5761,6 +6587,13 @@
 "lon": 34.95157
 },
 {
+"code": "567",
+"name_he": "צרעה",
+"name_en": "Zor'A",
+"lat": 31.76274,
+"lon": 34.96862
+},
+{
 "code": "57",
 "name_he": "כנרת (קבוצה)",
 "name_en": "Kinneret(Qevuza)",
@@ -5803,11 +6636,25 @@
 "lon": 35.11098
 },
 {
+"code": "575",
+"name_he": "יסעור",
+"name_en": "Yas'Ur",
+"lat": 32.90025,
+"lon": 35.16598
+},
+{
 "code": "576",
 "name_he": "כברי",
 "name_en": "Kabri",
 "lat": 33.0215,
 "lon": 35.1485
+},
+{
+"code": "577",
+"name_he": "יד בנימין",
+"name_en": "Yad Binyamin",
+"lat": 31.79784,
+"lon": 34.82161
 },
 {
 "code": "578",
@@ -5843,6 +6690,13 @@
 "name_en": "Kefar Hanagid",
 "lat": 31.88752,
 "lon": 34.75222
+},
+{
+"code": "584",
+"name_he": "זיקים",
+"name_en": "Ziqim",
+"lat": 31.60937,
+"lon": 34.52215
 },
 {
 "code": "585",
@@ -5913,6 +6767,13 @@
 "name_en": "Arugot",
 "lat": 31.73659,
 "lon": 34.77383
+},
+{
+"code": "594",
+"name_he": "צפריה",
+"name_en": "Zafriyya",
+"lat": 32.00526,
+"lon": 34.8551
 },
 {
 "code": "595",
@@ -6006,11 +6867,39 @@
 "lon": 35.43867
 },
 {
+"code": "610",
+"name_he": "סתריה",
+"name_en": "Sitriyya",
+"lat": 31.89188,
+"lon": 34.84405
+},
+{
 "code": "6100",
 "name_he": "בני ברק",
 "name_en": "Bene Beraq",
 "lat": 32.08739,
 "lon": 34.83244
+},
+{
+"code": "612",
+"name_he": "צרופה",
+"name_en": "Zerufa",
+"lat": 32.64824,
+"lon": 34.94805
+},
+{
+"code": "613",
+"name_he": "ציפורי",
+"name_en": "Zippori",
+"lat": 32.74431,
+"lon": 35.27812
+},
+{
+"code": "614",
+"name_he": "שומרה",
+"name_en": "Shomera",
+"lat": 33.08181,
+"lon": 35.28418
 },
 {
 "code": "615",
@@ -6074,6 +6963,13 @@
 "name_en": "En Zurim",
 "lat": 31.69405,
 "lon": 34.72009
+},
+{
+"code": "623",
+"name_he": "יראון",
+"name_en": "Yir'On",
+"lat": 33.07778,
+"lon": 35.45575
 },
 {
 "code": "627",
@@ -6146,6 +7042,13 @@
 "lon": 34.98017
 },
 {
+"code": "64",
+"name_he": "יד רמב\"ם",
+"name_en": "Yad Rambam",
+"lat": 31.89937,
+"lon": 34.90075
+},
+{
 "code": "6400",
 "name_he": "הרצליה",
 "name_en": "Herzeliyya",
@@ -6195,6 +7098,13 @@
 "lon": 35.0505
 },
 {
+"code": "658",
+"name_he": "שייח' דנון",
+"name_en": "Sheikh Dannun",
+"lat": 32.99432,
+"lon": 35.14792
+},
+{
 "code": "66",
 "name_he": "מרחביה (קיבוץ)",
 "name_en": "Merhavya(Qibbuz)",
@@ -6223,11 +7133,25 @@
 "lon": 35.29799
 },
 {
+"code": "663",
+"name_he": "טירת יהודה",
+"name_en": "Tirat Yehuda",
+"lat": 32.01407,
+"lon": 34.93338
+},
+{
 "code": "664",
 "name_he": "כרם בן זמרה",
 "name_en": "Kerem Ben Zimra",
 "lat": 33.03889,
 "lon": 35.46805
+},
+{
+"code": "665",
+"name_he": "תקומה",
+"name_en": "Tequma",
+"lat": 31.44856,
+"lon": 34.57757
 },
 {
 "code": "666",
@@ -6559,6 +7483,13 @@
 "lon": 35.16427
 },
 {
+"code": "709",
+"name_he": "תפרח",
+"name_en": "Tifrah",
+"lat": 31.32596,
+"lon": 34.68251
+},
+{
 "code": "71",
 "name_he": "אשבול",
 "name_en": "Eshbol",
@@ -6629,6 +7560,20 @@
 "lon": 34.94817
 },
 {
+"code": "718",
+"name_he": "ירחיב",
+"name_en": "Yarhiv",
+"lat": 32.15315,
+"lon": 34.96831
+},
+{
+"code": "719",
+"name_he": "תל קציר",
+"name_en": "Tel Qazir",
+"lat": 32.70519,
+"lon": 35.61782
+},
+{
 "code": "72",
 "name_he": "גן שמואל",
 "name_en": "Gan Shemu'El",
@@ -6676,6 +7621,13 @@
 "name_en": "Hodiyya",
 "lat": 31.67382,
 "lon": 34.6377
+},
+{
+"code": "727",
+"name_he": "תלמי יחיאל",
+"name_en": "Talme Yehi'El",
+"lat": 31.75373,
+"lon": 34.764
 },
 {
 "code": "729",
@@ -6776,6 +7728,13 @@
 "lon": 34.85662
 },
 {
+"code": "741",
+"name_he": "שואבה",
+"name_en": "Sho'Eva",
+"lat": 31.79916,
+"lon": 35.07909
+},
+{
 "code": "742",
 "name_he": "מסילת ציון",
 "name_en": "Mesillat Ziyyon",
@@ -6788,6 +7747,13 @@
 "name_en": "Kefar Shemu'El",
 "lat": 31.88914,
 "lon": 34.93281
+},
+{
+"code": "744",
+"name_he": "תלמי יפה",
+"name_en": "Talme Yafe",
+"lat": 31.61686,
+"lon": 34.61329
 },
 {
 "code": "745",
@@ -6846,6 +7812,20 @@
 "lon": 35.03608
 },
 {
+"code": "752",
+"name_he": "תעוז",
+"name_en": "Ta'Oz",
+"lat": 31.80204,
+"lon": 34.97446
+},
+{
+"code": "753",
+"name_he": "ינוב",
+"name_en": "Yanuv",
+"lat": 32.30606,
+"lon": 34.95046
+},
+{
 "code": "755",
 "name_he": "גורן",
 "name_en": "Goren",
@@ -6865,6 +7845,20 @@
 "name_en": "Mazliah",
 "lat": 31.90618,
 "lon": 34.87178
+},
+{
+"code": "758",
+"name_he": "יד חנה",
+"name_en": "Yad Hanna",
+"lat": 32.32552,
+"lon": 35.0061
+},
+{
+"code": "759",
+"name_he": "יציץ",
+"name_en": "Yaziz",
+"lat": 31.86234,
+"lon": 34.86295
 },
 {
 "code": "76",
@@ -6888,11 +7882,25 @@
 "lon": 35.07564
 },
 {
+"code": "761",
+"name_he": "שובה",
+"name_en": "Shuva",
+"lat": 31.45001,
+"lon": 34.54543
+},
+{
 "code": "762",
 "name_he": "בטחה",
 "name_en": "Bitha",
 "lat": 31.33428,
 "lon": 34.63449
+},
+{
+"code": "763",
+"name_he": "שתולים",
+"name_en": "Shetulim",
+"lat": 31.77196,
+"lon": 34.6836
 },
 {
 "code": "764",
@@ -6972,6 +7980,20 @@
 "lon": 35.02048
 },
 {
+"code": "774",
+"name_he": "צוריאל",
+"name_en": "Zuri'El",
+"lat": 33.00599,
+"lon": 35.31412
+},
+{
+"code": "775",
+"name_he": "יד נתן",
+"name_en": "Yad Natan",
+"lat": 31.65288,
+"lon": 34.70551
+},
+{
 "code": "776",
 "name_he": "מחסיה",
 "name_en": "Mahseya",
@@ -6984,6 +8006,13 @@
 "name_en": "Nahshon",
 "lat": 31.83096,
 "lon": 34.95592
+},
+{
+"code": "778",
+"name_he": "תרום",
+"name_en": "Tarum",
+"lat": 31.78257,
+"lon": 34.98151
 },
 {
 "code": "779",
@@ -7049,6 +8078,13 @@
 "lon": 35.09257
 },
 {
+"code": "788",
+"name_he": "זיתן",
+"name_en": "Zetan",
+"lat": 31.97539,
+"lon": 34.89142
+},
+{
 "code": "789",
 "name_he": "רנן",
 "name_en": "Rannen",
@@ -7098,11 +8134,39 @@
 "lon": 34.91292
 },
 {
+"code": "795",
+"name_he": "יערה",
+"name_en": "Ya'Ara",
+"lat": 33.06742,
+"lon": 35.18585
+},
+{
+"code": "796",
+"name_he": "צלפון",
+"name_en": "Zelafon",
+"lat": 31.80413,
+"lon": 34.93275
+},
+{
 "code": "797",
 "name_he": "אחיעזר",
 "name_en": "Ahi'Ezer",
 "lat": 31.98111,
 "lon": 34.87167
+},
+{
+"code": "798",
+"name_he": "יגל",
+"name_en": "Yagel",
+"lat": 31.98704,
+"lon": 34.88061
+},
+{
+"code": "799",
+"name_he": "זכריה",
+"name_en": "Zekharya",
+"lat": 31.70979,
+"lon": 34.94408
 },
 {
 "code": "80",
@@ -7140,11 +8204,25 @@
 "lon": 34.9374
 },
 {
+"code": "803",
+"name_he": "יושיביה",
+"name_en": "Yoshivya",
+"lat": 31.44355,
+"lon": 34.60915
+},
+{
 "code": "804",
 "name_he": "אחיסמך",
 "name_en": "Ahisamakh",
 "lat": 31.93556,
 "lon": 34.90806
+},
+{
+"code": "805",
+"name_he": "ישעי",
+"name_en": "Yish'I",
+"lat": 31.75164,
+"lon": 34.96542
 },
 {
 "code": "806",
@@ -7182,6 +8260,20 @@
 "lon": 34.9828
 },
 {
+"code": "811",
+"name_he": "יכיני",
+"name_en": "Yakhini",
+"lat": 31.48322,
+"lon": 34.60009
+},
+{
+"code": "812",
+"name_he": "שלומי",
+"name_en": "Shelomi",
+"lat": 33.07605,
+"lon": 35.14858
+},
+{
 "code": "813",
 "name_he": "עין יעקב",
 "name_en": "En Ya'Aqov",
@@ -7189,11 +8281,39 @@
 "lon": 35.22929
 },
 {
+"code": "814",
+"name_he": "תלמים",
+"name_en": "Telamim",
+"lat": 31.56356,
+"lon": 34.67208
+},
+{
+"code": "815",
+"name_he": "זבדיאל",
+"name_en": "Zavdi'El",
+"lat": 31.65843,
+"lon": 34.75975
+},
+{
+"code": "816",
+"name_he": "זנוח",
+"name_en": "Zanoah",
+"lat": 31.73157,
+"lon": 35.00073
+},
+{
 "code": "817",
 "name_he": "עזריקם",
 "name_en": "Azriqam",
 "lat": 31.75377,
 "lon": 34.6949
+},
+{
+"code": "818",
+"name_he": "זרחיה",
+"name_en": "Zerahya",
+"lat": 31.68068,
+"lon": 34.74551
 },
 {
 "code": "819",
@@ -7259,11 +8379,25 @@
 "lon": 35.05796
 },
 {
+"code": "826",
+"name_he": "עוזה",
+"name_en": "Uza",
+"lat": 31.59248,
+"lon": 34.76495
+},
+{
 "code": "827",
 "name_he": "נווה מבטח",
 "name_en": "Newe Mivtah",
 "lat": 31.80592,
 "lon": 34.74103
+},
+{
+"code": "828",
+"name_he": "ישרש",
+"name_en": "Yashresh",
+"lat": 31.91578,
+"lon": 34.84993
 },
 {
 "code": "829",
@@ -7322,6 +8456,13 @@
 "lon": 34.88629
 },
 {
+"code": "84",
+"name_he": "תל יוסף",
+"name_en": "Tel Yosef",
+"lat": 32.55611,
+"lon": 35.39965
+},
+{
 "code": "840",
 "name_he": "כיסופים",
 "name_en": "Kissufim",
@@ -7369,6 +8510,13 @@
 "name_en": "Kefar Azza",
 "lat": 31.48334,
 "lon": 34.53332
+},
+{
+"code": "846",
+"name_he": "שפר",
+"name_en": "Shefer",
+"lat": 32.94332,
+"lon": 35.43543
 },
 {
 "code": "848",
@@ -7504,6 +8652,20 @@
 "lon": 34.92704
 },
 {
+"code": "865",
+"name_he": "שיבולים",
+"name_en": "Shibbolim",
+"lat": 31.39598,
+"lon": 34.60893
+},
+{
+"code": "866",
+"name_he": "יטבתה",
+"name_en": "Yotvata",
+"lat": 29.89623,
+"lon": 35.06005
+},
+{
 "code": "868",
 "name_he": "אלוני יצחק",
 "name_en": "Allone Yizhaq",
@@ -7637,6 +8799,13 @@
 "lon": 35.1014
 },
 {
+"code": "8900",
+"name_he": "טמרה",
+"name_en": "Tamra",
+"lat": 32.63435,
+"lon": 35.40425
+},
+{
 "code": "892",
 "name_he": "עבדון",
 "name_en": "Avdon",
@@ -7670,6 +8839,20 @@
 "name_en": "Nahariyya",
 "lat": 33.00664,
 "lon": 35.09843
+},
+{
+"code": "913",
+"name_he": "שבלי - אום אל-גנם",
+"name_en": "Shibli",
+"lat": 32.67585,
+"lon": 35.39187
+},
+{
+"code": "916",
+"name_he": "ישע",
+"name_en": "Yesha",
+"lat": 31.24641,
+"lon": 34.40325
 },
 {
 "code": "917",
@@ -7805,6 +8988,13 @@
 "lon": null
 },
 {
+"code": "957",
+"name_he": "עוקבי (בנו עוקבה)",
+"name_en": "Uqbi (Banu Uqba)",
+"lat": null,
+"lon": null
+},
+{
 "code": "958",
 "name_he": "אבו עבדון (שבט)",
 "name_en": "Abu Abdun",
@@ -7817,6 +9007,13 @@
 "name_en": "Afeinish",
 "lat": null,
 "lon": null
+},
+{
+"code": "96",
+"name_he": "יגור",
+"name_en": "Yagur",
+"lat": 32.74154,
+"lon": 35.07774
 },
 {
 "code": "960",
@@ -7838,6 +9035,13 @@
 "name_en": "Abu Ruqayyeq",
 "lat": null,
 "lon": null
+},
+{
+"code": "962",
+"name_he": "טובא-זנגריה",
+"name_en": "Tuba-Zangariyye",
+"lat": 32.96632,
+"lon": 35.59442
 },
 {
 "code": "963",
@@ -7896,6 +9100,13 @@
 "lon": 35.31596
 },
 {
+"code": "970",
+"name_he": "תראבין א-צאנע (שבט)",
+"name_en": "Tarabin As-Sani",
+"lat": 31.34285,
+"lon": 34.73555
+},
+{
 "code": "9700",
 "name_he": "הוד השרון",
 "name_en": "Hod Hasharon",
@@ -7908,6 +9119,13 @@
 "name_en": "Qawa'In",
 "lat": null,
 "lon": null
+},
+{
+"code": "975",
+"name_he": "זרזיר",
+"name_en": "Zarzir",
+"lat": 32.72743,
+"lon": 35.21335
 },
 {
 "code": "976",
