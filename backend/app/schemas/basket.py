@@ -67,3 +67,4 @@ class BasketComparison(BaseModel):
     savings_vs_most_expensive: Decimal
     remembered_matches: int = Field(description="Product picks taken from your saved choices")
     ai_matches: int = Field(description="Product picks made by the AI this time")
+    ai_available: bool = Field(True, description="False when the AI failed and rule-based matching was used")

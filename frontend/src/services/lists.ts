@@ -21,7 +21,7 @@ export async function deleteList(id: string): Promise<void> {
 }
 
 export async function compareSavedList(id: string): Promise<BasketComparison> {
-  const res = await api.post<BasketComparison>(`/lists/${id}/compare`);
+  const res = await api.post<BasketComparison>(`/lists/${id}/compare`, undefined, { timeout: 90_000 });
   return res.data;
 }
 

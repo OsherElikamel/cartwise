@@ -129,7 +129,8 @@ def compare_items(
     if user:
         db.commit()
 
-    return _assemble(stores, items, keys, chosen, candidates, remembered_count)
+    # The provider records whether it had to fall back to rule-based matching.
+    return _assemble(stores, items, keys, chosen, candidates, remembered_count, not getattr(llm, "degraded", False))
 
 
 def reprice(
@@ -158,7 +159,7 @@ def reprice(
     return _assemble(stores, items, keys, chosen, candidates, remembered)
 
 
-def _assemble(stores, items, keys, chosen, candidates, remembered_count) -> BasketComparison:
+def _assemble(stores, items, keys, chosen, candidates, remembered_count, ai_available: bool = True) -> BasketComparison:
     """Price every branch's basket and rank branches on the items all of them have."""
     baskets = [_build_basket(store, chain, items, keys, chosen, candidates) for store, chain in stores]
     shared = [i for i in range(len(items)) if all(i not in b.missing for b in baskets)]
@@ -170,6 +171,7 @@ def _assemble(stores, items, keys, chosen, candidates, remembered_count) -> Bask
 
     totals = [b.shared_total for b in baskets]
     return BasketComparison(
+        ai_available=ai_available,
         items=items,
         shared_items=shared,
         stores=baskets,

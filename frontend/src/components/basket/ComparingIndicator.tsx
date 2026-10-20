@@ -13,6 +13,7 @@ interface ComparingIndicatorProps {
 const READING_MS = 2500;
 const SEARCH_STEP_MS = 1100;
 const CHOOSE_STEP_MS = 2300;
+const SLOW_AFTER_MS = 20_000;
 
 /**
  * Shows the real pipeline, in its real order, with the user's own items and
@@ -60,7 +61,11 @@ export default function ComparingIndicator({ lines, chains }: ComparingIndicator
         <Loader2 size={18} className="shrink-0 animate-spin text-accent" aria-hidden />
         <span className="text-sm">{message}</span>
       </div>
-      {aiPhase && <p className="mt-2 ps-[1.875rem] text-xs text-app-text-secondary">{t('progress.aiNote')}</p>}
+      {aiPhase && (
+        <p className="mt-2 ps-[1.875rem] text-xs text-app-text-secondary">
+          {elapsed > SLOW_AFTER_MS ? t('progress.slow') : t('progress.aiNote')}
+        </p>
+      )}
     </div>
   );
 }

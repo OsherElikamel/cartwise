@@ -54,8 +54,10 @@ const he: Record<MessageKey, string> = {
   'progress.searching': 'מחפשים {item} במדפים של {chain}…',
   'progress.choosing': 'בוחרים את המוצר הנכון עבור {item} ב{chain}…',
   'progress.deals': 'בודקים מבצעים ב{chain}…',
+  'progress.slow': 'זה לוקח יותר זמן מהרגיל. אם ה-AI לא יענה בקרוב, CartWise יתאים לפי חיפוש טקסט.',
   'progress.aiNote': 'ה-AI מתאים לכל פריט מוצר אמיתי. זה לוקח כמה שניות.',
 
+  'results.aiResting': 'ה-AI במנוחה כרגע (המכסה היומית החינמית שלו נגמרה), לכן CartWise התאים מוצרים לפי חיפוש טקסט. כדאי לבדוק את הבחירות.',
   'results.cheapestBasket': 'הסל הזול ביותר',
   'results.less': '{amount} פחות',
   'results.thanMostExpensive': 'מהסופר היקר ביותר',
@@ -179,6 +181,8 @@ const he: Record<MessageKey, string> = {
 
   'error.generic': 'משהו השתבש. כדאי לנסות שוב.',
   'error.offline': 'אין חיבור ל-CartWise כרגע. כדאי לבדוק את החיבור לאינטרנט.',
+  'error.timeout': 'זה לקח יותר מדי זמן. כדאי לנסות שוב.',
+  'error.code.ai_timeout': 'ה-AI לקח יותר מדי זמן לענות. כדאי לנסות שוב.',
   'error.tooMany': 'יותר מדי בקשות. כדאי לחכות דקה ולנסות שוב.',
   'error.rateLimited': 'יותר מדי ניסיונות. כדאי לחכות {seconds} שניות ולנסות שוב.',
   'error.code.email_taken': 'כבר יש חשבון עם האימייל הזה.',

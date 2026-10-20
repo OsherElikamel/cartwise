@@ -65,8 +65,10 @@ def compare_list(
     lst = _get_owned(db, user, list_id)
     if lst.parsed_items is None:
         items = basket_service.parse_list(llm, lst.text)
-        lst.parsed_items = [item.model_dump() for item in items]
-        db.commit()
+        # A rule-based reading (AI unavailable) is not cached: next time, the AI gets another chance.
+        if not getattr(llm, "degraded", False):
+            lst.parsed_items = [item.model_dump() for item in items]
+            db.commit()
     else:
         items = [ParsedItem.model_validate(raw) for raw in lst.parsed_items]
 

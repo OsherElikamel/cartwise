@@ -53,8 +53,10 @@ const en = {
   'progress.searching': 'Searching the shelves at {chain} for {item}…',
   'progress.choosing': 'Choosing the right product for {item} at {chain}…',
   'progress.deals': 'Checking deals at {chain}…',
+  'progress.slow': "This is taking longer than usual. If the AI doesn't answer soon, CartWise will match by text instead.",
   'progress.aiNote': 'The AI is matching each item to a real product. This takes a few seconds.',
 
+  'results.aiResting': 'The AI is resting right now (its free daily quota is used up), so CartWise matched products by text search. Please check the picks.',
   'results.cheapestBasket': 'Cheapest basket',
   'results.less': '{amount} less',
   'results.thanMostExpensive': 'than the most expensive store',
@@ -178,6 +180,8 @@ const en = {
 
   'error.generic': 'Something went wrong. Please try again.',
   'error.offline': 'Cannot reach CartWise right now. Check your connection.',
+  'error.timeout': 'This took too long. Please try again.',
+  'error.code.ai_timeout': 'The AI took too long to answer. Please try again.',
   'error.tooMany': 'Too many requests. Please wait a minute and try again.',
   'error.rateLimited': 'Too many attempts. Please wait {seconds} seconds and try again.',
   'error.code.email_taken': 'This email already has an account.',

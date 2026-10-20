@@ -18,6 +18,7 @@ export function getErrorCode(err: unknown): string | null {
  *  The server sends a stable `code`; its English `detail` is only a fallback. */
 export function getErrorMessage(err: unknown, t: Translate, fallback: MessageKey = 'error.generic'): string {
   if (!isAxiosError(err)) return t(fallback);
+  if (err.code === 'ECONNABORTED') return t('error.timeout');
   if (!err.response) return t('error.offline');
 
   const data = err.response.data ?? {};

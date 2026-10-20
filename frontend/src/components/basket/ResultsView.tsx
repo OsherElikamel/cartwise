@@ -60,6 +60,13 @@ export default function ResultsView({ result, editable, canSave, busyLine = null
         )}
       </section>
 
+      {result.ai_available === false && (
+        <p role="status" className="flex items-start gap-2 rounded-2xl bg-app-elevated px-4 py-3 text-sm">
+          <Info size={16} className="mt-0.5 shrink-0 text-accent" aria-hidden />
+          {t('results.aiResting')}
+        </p>
+      )}
+
       {editable && toCheck > 0 && (
         <p role="status" className="flex items-start gap-2 rounded-2xl bg-warning/10 px-4 py-3 text-sm text-warning">
           <AlertTriangle size={16} className="mt-0.5 shrink-0" aria-hidden />

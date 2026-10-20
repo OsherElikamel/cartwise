@@ -103,6 +103,7 @@ export interface BasketComparison {
   savings_vs_most_expensive: string;
   remembered_matches: number;
   ai_matches: number;
+  ai_available?: boolean;
 }
 
 export interface ProductResult {

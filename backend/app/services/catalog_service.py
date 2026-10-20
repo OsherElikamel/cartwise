@@ -96,7 +96,11 @@ def search_products(
     tiebreak = func.similarity(terms[0], StoreItem.name)
     # Bought by weight: loose produce before canned or packaged products that share the word.
     ordering = [StoreItem.is_weighted.desc()] if prefer_weighted else []
-    ordering += [score.desc(), tiebreak.desc()]
+    # Among equal scores, a name that starts with one of the terms is almost
+    # always the one meant ("במבה 80 גרם", not "פופקו פופקורן במבה"), and the
+    # plain product usually has the shortest label ("עגבניה", not "עגבניות שרי").
+    starts_with = or_(*[StoreItem.name.ilike(f"{term}%") for term in terms])
+    ordering += [score.desc(), starts_with.desc(), func.length(StoreItem.name), tiebreak.desc()]
     scope = Store.is_tracked.is_(True) if not store_ids else Store.id.in_(store_ids)
     ranked = (
         select(

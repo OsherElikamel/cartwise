@@ -1,6 +1,8 @@
 import json
 import logging
+import time
 
+import httpx
 from google import genai
 from google.genai import errors as genai_errors
 from google.genai import types
@@ -12,6 +14,8 @@ from app.core.errors import UpstreamError
 
 logger = logging.getLogger(__name__)
 
+RETRYABLE_STATUS = {500, 503, 504}
+
 
 class GeminiProvider:
     name = "gemini"
@@ -22,17 +26,16 @@ class GeminiProvider:
     PARSE_THINKING_BUDGET = 0
     MATCH_THINKING_BUDGET = 1024
 
-    def __init__(self, api_key: str, model: str, fallback_model: str | None = None) -> None:
-        # 503 ("high demand") is temporary: back off and retry. 429 is not retried
-        # here: the free tier's quota is per minute, so retrying the same model
-        # only spends more of it. A 429 moves on to the fallback model instead,
-        # which has its own quota.
-        retry = types.HttpRetryOptions(
-            attempts=4, initial_delay=1.0, max_delay=8.0, exp_base=2.0, jitter=0.5,
-            http_status_codes=[500, 503, 504],
-        )
-        self.client = genai.Client(api_key=api_key, http_options=types.HttpOptions(retry_options=retry))
+    def __init__(self, api_key: str, model: str, fallback_model: str | None = None, timeout_seconds: float = 20) -> None:
+        # SDK retries are off: they also retry timeouts, which multiplied a 20s
+        # limit into an 88s wait. The policy lives in _generate instead, against
+        # one time budget per call: a 503 ("busy") gets one quick retry; a 429
+        # (quota) moves to the fallback model, which has its own quota; a
+        # timeout gives up at once, because asking a slow model again only
+        # doubles the wait.
+        self.client = genai.Client(api_key=api_key, http_options=types.HttpOptions(retry_options=types.HttpRetryOptions(attempts=1)))
         self.models = [model] + ([fallback_model] if fallback_model and fallback_model != model else [])
+        self.budget_seconds = timeout_seconds
 
     @staticmethod
     def _thinking(model: str, budget: int) -> types.ThinkingConfig:
@@ -42,7 +45,13 @@ class GeminiProvider:
         return types.ThinkingConfig(thinking_level=types.ThinkingLevel.MINIMAL if budget == 0 else types.ThinkingLevel.LOW)
 
     def _generate(self, system: str, prompt: str, schema: type, thinking_budget: int):
-        for attempt, model in enumerate(self.models, start=1):
+        deadline = time.monotonic() + self.budget_seconds
+        index, retried_busy = 0, False
+        while True:
+            model = self.models[index]
+            remaining = deadline - time.monotonic()
+            if remaining < 1:
+                raise UpstreamError("The AI took too long to answer.", "ai_timeout")
             try:
                 response = self.client.models.generate_content(
                     model=model,
@@ -53,17 +62,27 @@ class GeminiProvider:
                         response_json_schema=schema.model_json_schema(),
                         temperature=0,
                         thinking_config=self._thinking(model, thinking_budget),
+                        http_options=types.HttpOptions(timeout=int(remaining * 1000)),
                     ),
                 )
                 break
             except genai_errors.APIError as exc:
-                if exc.code == 429 and attempt < len(self.models):
-                    logger.warning("Gemini quota hit on %s; falling back to %s", model, self.models[attempt])
+                if exc.code in RETRYABLE_STATUS and not retried_busy:
+                    retried_busy = True
+                    logger.warning("Gemini busy (%s) on %s; retrying once", exc.code, model)
+                    time.sleep(1)
+                    continue
+                if exc.code == 429 and index + 1 < len(self.models):
+                    logger.warning("Gemini quota hit on %s; falling back to %s", model, self.models[index + 1])
+                    index += 1
                     continue
                 logger.error("Gemini call failed on %s: %s", model, exc)
                 if exc.code == 429:
                     raise UpstreamError("CartWise's free AI quota is busy. Please try again in a minute.", "ai_busy") from exc
                 raise UpstreamError("The AI service is unavailable right now. Please try again.", "ai_unavailable") from exc
+            except httpx.TimeoutException as exc:
+                logger.error("Gemini call timed out on %s", model)
+                raise UpstreamError("The AI took too long to answer.", "ai_timeout") from exc
 
         # Validate with our own models: the schema guides the model, our code enforces it.
         try:

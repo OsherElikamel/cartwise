@@ -1,8 +1,10 @@
 import api from './api';
 import type { BasketComparison, ParsedItem, Pick } from '../types';
 
+const COMPARE_TIMEOUT_MS = 90_000;
+
 export async function compareList(text: string, storeIds?: string[]): Promise<BasketComparison> {
-  const res = await api.post<BasketComparison>('/baskets/compare', { text, store_ids: storeIds });
+  const res = await api.post<BasketComparison>('/baskets/compare', { text, store_ids: storeIds }, { timeout: COMPARE_TIMEOUT_MS });
   return res.data;
 }
 

@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     GEMINI_FALLBACK_MODEL: str = "gemini-3.5-flash-lite"
     ANTHROPIC_API_KEY: str = ""
     CLAUDE_MODEL: str = "claude-sonnet-5-5"
+    # A slow AI answer is worse than none: past this, fall back to rule-based matching.
+    AI_TIMEOUT_SECONDS: float = 20
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 
