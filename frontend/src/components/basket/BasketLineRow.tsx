@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowLeftRight, BookmarkCheck, Check, Tag } from 'lucide-react';
+import { AlertTriangle, ArrowLeftRight, BookmarkCheck, Check, Scale, Tag } from 'lucide-react';
 import { useState } from 'react';
 import { useI18n } from '../../i18n/LanguageContext';
 import type { Alternative, BasketLine, ParsedItem } from '../../types';
@@ -30,6 +30,7 @@ export default function BasketLineRow({ line, storeId, chainSlug, item, editable
       <div className="flex items-start gap-3">
         <span className="w-16 shrink-0 whitespace-nowrap pt-0.5 font-mono text-sm text-app-text-secondary">
           {quantity(item.quantity, item.unit)}
+          {line.estimated_kg && <span className="block text-xs">{t('line.estimatedKg', { kg: Number(line.estimated_kg) })}</span>}
         </span>
         <div className="min-w-0 flex-1">
           <p dir="auto" className={`text-sm font-semibold ${missing ? 'text-app-text-secondary line-through' : ''}`}>
@@ -40,6 +41,11 @@ export default function BasketLineRow({ line, storeId, chainSlug, item, editable
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {line.deal && <Badge tone="deal" icon={<Tag size={11} />} title={line.deal}>{t('line.deal')}</Badge>}
+            {line.estimated_kg && (
+              <Badge tone="neutral" icon={<Scale size={11} />} title={t('line.estimatedTitle', { kg: Number(line.estimated_kg) })}>
+                {t('line.estimated')}
+              </Badge>
+            )}
             {unsure && <Badge tone="warning" icon={<AlertTriangle size={11} />}>{t('line.checkThis')}</Badge>}
             {line.confidence === 'remembered' && <Badge tone="success" icon={<BookmarkCheck size={11} />}>{t('line.yourChoice')}</Badge>}
           </div>

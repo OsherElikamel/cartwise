@@ -18,6 +18,11 @@ class ParsedItem(BaseModel):
     )
     quantity: float = Field(gt=0, description="How many units, or how many kilos when unit is 'kg'")
     unit: Literal["unit", "kg"]
+    unit_weight_kg: float | None = Field(
+        None, gt=0, le=30,
+        description="Only when unit is 'unit' and the item is usually sold by weight (whole watermelon, "
+        "melon, pineapple, cabbage, apples by count): the typical weight of ONE unit in kg",
+    )
     brand: str | None = Field(None, description="Brand only if the user named one, in Hebrew")
     size: str | None = Field(None, description="Package size only if the user gave one, e.g. '1 ליטר'")
 

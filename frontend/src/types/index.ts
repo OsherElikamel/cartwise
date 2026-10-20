@@ -36,6 +36,7 @@ export interface ParsedItem {
   search_terms: string[];
   quantity: number;
   unit: Unit;
+  unit_weight_kg?: number | null;
   brand: string | null;
   size: string | null;
 }
@@ -56,6 +57,7 @@ export interface BasketLine {
   is_weighted: boolean | null;
   regular_price: string | null;
   line_total: string | null;
+  estimated_kg?: string | null;
   deal: string | null;
   confidence: Confidence | null;
   reason: string | null;

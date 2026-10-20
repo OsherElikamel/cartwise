@@ -40,6 +40,7 @@ class BasketLine(BaseModel):
     is_weighted: bool | None
     regular_price: Decimal | None
     line_total: Decimal | None
+    estimated_kg: Decimal | None = Field(None, description="Set when a counted item is sold by weight: the kilos priced")
     deal: str | None
     confidence: Literal["high", "low", "remembered"] | None
     reason: str | None

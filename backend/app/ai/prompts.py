@@ -14,8 +14,12 @@ For each item:
   so always include the formal label name too: "חמוצים" (pickles) are labelled
   "מלפפון בחומץ" or "מלפפון במלח"; "שמנת לבישול" is "שמנת מתוקה". Words like "פחית",
   "קופסה" or "שקית" describe the packaging, not the product: leave them out of the terms.
-- quantity and unit: produce, meat, cheese from the deli and anything asked for by
-  weight is unit "kg" ("חצי קילו" = 0.5). Everything else is "unit". Default quantity is 1.
+- quantity and unit: anything asked for by weight is unit "kg" ("קילו" = 1, "חצי קילו" = 0.5).
+  Loose produce, meat and deli cheese with no amount given is unit "kg", quantity 1.
+  Produce that is counted or bought whole ("6 תפוחים", "אבטיח", "מלון", "אננס", "כרוב") is
+  unit "unit" with quantity = how many, plus unit_weight_kg = the typical weight of one
+  (watermelon about 8, melon 1.5, pineapple 1.5, cabbage 1.5, apple 0.2). Everything else
+  is unit "unit". Default quantity is 1.
 - brand and size: only when the shopper wrote them. Never invent them.
 - Skip anything that is not a product (greetings, notes to self).
 """

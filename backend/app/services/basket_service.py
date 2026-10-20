@@ -240,6 +240,20 @@ def _accept_decisions(decisions: list[MatchDecision], open_pairs, candidates):
         yield d, offered[d.item_code]
 
 
+def _quantity_for(item: ParsedItem, product: ProductResult) -> tuple[Decimal, Decimal | None]:
+    """How much of `product` to price, and the estimated kilos when we had to guess.
+
+    A counted item ("אבטיח", "6 תפוחים") sold by weight is priced at its typical
+    weight per unit, and flagged as an estimate. The same item sold per unit
+    (some chains price a pineapple per piece) is simply counted.
+    """
+    quantity = Decimal(str(item.quantity))
+    if product.is_weighted and item.unit == "unit":
+        kilos = quantity * Decimal(str(item.unit_weight_kg or 1))
+        return kilos, kilos.normalize()
+    return quantity, None
+
+
 def _build_basket(store, chain, items, keys, chosen, candidates) -> StoreBasket:
     lines, missing = [], []
     for index, item in enumerate(items):
@@ -261,14 +275,16 @@ def _build_basket(store, chain, items, keys, chosen, candidates) -> StoreBasket:
             continue
 
         product = choice.product
+        quantity, estimated_kg = _quantity_for(item, product)
         priced = price_line(
-            Decimal(str(item.quantity)), product.is_weighted, product.price,
+            quantity, product.is_weighted, product.price,
             product.deal.min_qty if product.deal else None,
             product.deal.unit_price if product.deal else None,
         )
         lines.append(BasketLine(
             index=index, match_key=keys[index], item_code=product.item_code, name=product.name,
             is_weighted=product.is_weighted, regular_price=product.price, line_total=priced.total,
+            estimated_kg=estimated_kg,
             deal=product.deal.description if priced.deal_applied and product.deal else None,
             confidence=choice.confidence, reason=choice.reason, alternatives=alternatives,
         ))

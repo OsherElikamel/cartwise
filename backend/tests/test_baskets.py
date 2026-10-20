@@ -114,3 +114,42 @@ def test_guest_cannot_reprice_on_other_branches(client, catalog, fake_llm):
         "items": body["items"], "store_ids": [str(catalog["rami_levy_other"].id)], "picks": [],
     })
     assert res.status_code == 400
+
+
+def reprice_one(client, catalog, item, store_key, item_code):
+    store_id = str(catalog[store_key].id)
+    res = client.post("/api/baskets/reprice", json={
+        "items": [item], "store_ids": [store_id],
+        "picks": [{"store_id": store_id, "index": 0, "item_code": item_code, "confidence": "high", "reason": "test"}],
+    })
+    assert res.status_code == 200
+    return res.json()["stores"][0]["lines"][0]
+
+
+def test_counted_item_sold_by_weight_is_priced_at_its_estimated_weight(client, catalog):
+    # "a watermelon": 1 unit of about 8 kg, sold per kilo
+    item = {"original": "אבטיח", "search_terms": ["אבטיח"], "quantity": 1, "unit": "unit", "unit_weight_kg": 8}
+    line = reprice_one(client, catalog, item, "shufersal", "2000001")  # עגבניה, 7.90 per kg, weighted
+    assert Decimal(line["line_total"]) == Decimal("63.20")
+    assert Decimal(line["estimated_kg"]) == Decimal("8")
+
+
+def test_several_counted_items_multiply_the_estimate(client, catalog):
+    item = {"original": "6 תפוחים", "search_terms": ["תפוח"], "quantity": 6, "unit": "unit", "unit_weight_kg": 0.2}
+    line = reprice_one(client, catalog, item, "shufersal", "2000001")
+    assert Decimal(line["line_total"]) == Decimal("9.48")  # 1.2 kg x 7.90
+    assert Decimal(line["estimated_kg"]) == Decimal("1.2")
+
+
+def test_item_asked_by_weight_is_not_an_estimate(client, catalog):
+    item = {"original": "חצי קילו עגבניות", "search_terms": ["עגבניה"], "quantity": 0.5, "unit": "kg"}
+    line = reprice_one(client, catalog, item, "shufersal", "2000001")
+    assert Decimal(line["line_total"]) == Decimal("3.95")
+    assert line["estimated_kg"] is None
+
+
+def test_counted_item_sold_per_unit_is_simply_counted(client, catalog):
+    item = {"original": "2 חלב", "search_terms": ["חלב"], "quantity": 2, "unit": "unit", "unit_weight_kg": 1}
+    line = reprice_one(client, catalog, item, "shufersal", "7290004131074")  # packaged, not weighted
+    assert Decimal(line["line_total"]) == Decimal("14.70")
+    assert line["estimated_kg"] is None
