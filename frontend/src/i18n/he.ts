@@ -84,6 +84,11 @@ const he: Record<MessageKey, string> = {
   'line.pickProduct': 'בחירת מוצר',
   'line.notRight': 'לא המוצר הנכון? החלפה',
   'line.kg': 'ק״ג',
+  'line.searchPlaceholder': 'חיפוש בסניף הזה, למשל מלפפון בחומץ',
+  'line.searchAria': 'חיפוש מוצרים ב{chain}',
+  'line.suggestions': 'הצעות',
+  'line.noResults': 'לא נמצא. כדאי לנסות את השם כפי שהוא כתוב על המדף.',
+  'line.close': 'סגירה',
 
   'toast.savedChoice': 'נשמר. בפעם הבאה CartWise ישתמש במוצר הזה ב{chain}.',
   'toast.swappedSaved': 'הוחלף ונשמר לפעם הבאה.',

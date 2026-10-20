@@ -10,7 +10,10 @@ For each item:
   product ("חלב 3%", "ביצים L", "קוטג' 5%"). Translate English items to Hebrew. Labels mix
   singular and plural and spell things differently, so add the variants a label might use:
   loose produce is usually singular ("עגבניה", "מלפפון", "בננה") even when the shopper
-  writes plural.
+  writes plural. Shoppers use everyday names, but labels print the formal product name,
+  so always include the formal label name too: "חמוצים" (pickles) are labelled
+  "מלפפון בחומץ" or "מלפפון במלח"; "שמנת לבישול" is "שמנת מתוקה". Words like "פחית",
+  "קופסה" or "שקית" describe the packaging, not the product: leave them out of the terms.
 - quantity and unit: produce, meat, cheese from the deli and anything asked for by
   weight is unit "kg" ("חצי קילו" = 0.5). Everything else is "unit". Default quantity is 1.
 - brand and size: only when the shopper wrote them. Never invent them.

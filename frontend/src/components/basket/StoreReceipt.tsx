@@ -30,6 +30,8 @@ export default function StoreReceipt({
           <BasketLineRow
             key={line.index}
             line={line}
+            storeId={store.store_id}
+            chainSlug={store.chain_slug}
             item={items[line.index]}
             editable={editable}
             canSave={canSave}

@@ -83,6 +83,11 @@ const en = {
   'line.pickProduct': 'Pick a product',
   'line.notRight': 'Not the right product? Swap',
   'line.kg': 'kg',
+  'line.searchPlaceholder': 'Search this store, e.g. מלפפון בחומץ',
+  'line.searchAria': 'Search products at {chain}',
+  'line.suggestions': 'Suggestions',
+  'line.noResults': 'Nothing found. Try the name as it would appear on the shelf label.',
+  'line.close': 'Close',
 
   'toast.savedChoice': 'Saved. Next time CartWise will use this product at {chain}.',
   'toast.swappedSaved': 'Swapped and saved for next time.',

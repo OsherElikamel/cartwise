@@ -82,6 +82,15 @@ export interface BasketComparison {
   ai_matches: number;
 }
 
+export interface ProductResult {
+  store_id: string;
+  chain_slug: string;
+  item_code: string;
+  name: string;
+  price: string;
+  is_weighted: boolean;
+}
+
 export interface Pick {
   store_id: string;
   index: number;
