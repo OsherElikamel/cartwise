@@ -1,89 +1,90 @@
 import { History, ListChecks, LogIn, LogOut, MapPin, ShoppingBasket } from 'lucide-react';
-import type { ReactNode } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import type { MessageKey } from '../../i18n/en';
+import { useI18n } from '../../i18n/LanguageContext';
 import BrandMark from '../ui/BrandMark';
+import LanguageToggle from '../ui/LanguageToggle';
 import ThemeToggle from '../ui/ThemeToggle';
 
-const NAV = [
-  { to: '/', label: 'Compare', icon: ShoppingBasket, end: true },
-  { to: '/lists', label: 'Lists', icon: ListChecks, end: false },
-  { to: '/history', label: 'History', icon: History, end: false },
-  { to: '/branches', label: 'Branches', icon: MapPin, end: false },
+const NAV: { to: string; label: MessageKey; icon: typeof ShoppingBasket; end: boolean }[] = [
+  { to: '/', label: 'nav.compare', icon: ShoppingBasket, end: true },
+  { to: '/lists', label: 'nav.lists', icon: ListChecks, end: false },
+  { to: '/history', label: 'nav.history', icon: History, end: false },
+  { to: '/branches', label: 'nav.branches', icon: MapPin, end: false },
 ];
-
-function TopLink({ to, end, children }: { to: string; end: boolean; children: ReactNode }) {
-  return (
-    <NavLink
-      to={to}
-      end={end}
-      className={({ isActive }) =>
-        `flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium transition-colors ${
-          isActive ? 'bg-app-elevated text-app-text' : 'text-app-text-secondary hover:bg-app-hover hover:text-app-text'
-        }`
-      }
-    >
-      {children}
-    </NavLink>
-  );
-}
 
 export default function AppShell() {
   const { user, logout } = useAuth();
+  const { t } = useI18n();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 border-b border-app-border bg-app-bg/90 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center gap-2 px-4 md:px-6">
-          <Link to="/" aria-label="CartWise home" className="mr-2 flex items-center gap-2">
+    <div className={`relative min-h-screen px-2 pt-2 md:px-8 md:pb-10 md:pt-20 ${user ? 'pb-24' : 'pb-2'}`}>
+      <div className="aurora-frame" aria-hidden><div className="aurora" /></div>
+
+      <div className="window mx-auto flex min-h-[calc(100vh-1rem)] max-w-6xl flex-col rounded-3xl md:min-h-[calc(100vh-7rem)] md:rounded-[2rem]">
+        <header className="flex h-16 min-w-0 items-center gap-1 px-3 md:h-20 md:gap-2 md:px-8">
+          <Link to="/" aria-label={t('nav.home')} className="me-2 flex items-center gap-2.5">
             <BrandMark />
-            <span className="text-base font-bold tracking-tight">CartWise</span>
+            <span className="hidden text-lg font-bold tracking-tight sm:inline">CartWise</span>
           </Link>
 
           {user && (
-            <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+            <nav aria-label={t('nav.main')} className="mx-auto hidden items-center gap-1 md:flex">
               {NAV.map(({ to, label, icon: Icon, end }) => (
-                <TopLink key={to} to={to} end={end}>
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={end}
+                  className={({ isActive }) =>
+                    `flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors ${
+                      isActive ? 'bg-app-text text-app-bg' : 'text-app-text-secondary hover:bg-app-hover hover:text-app-text'
+                    }`
+                  }
+                >
                   <Icon size={16} aria-hidden />
-                  {label}
-                </TopLink>
+                  {t(label)}
+                </NavLink>
               ))}
             </nav>
           )}
 
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ms-auto flex items-center gap-1">
+            <LanguageToggle />
             <ThemeToggle />
             {user ? (
               <button
                 type="button"
                 onClick={logout}
-                aria-label={`Sign out ${user.name}`}
-                className="flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium text-app-text-secondary hover:bg-app-hover hover:text-app-text"
+                aria-label={t('nav.signOutUser', { name: user.name })}
+                className="flex h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-app-text-secondary hover:bg-app-hover hover:text-app-text"
               >
-                <LogOut size={16} aria-hidden />
-                <span className="hidden sm:inline">Sign out</span>
+                <LogOut size={16} className="rtl:rotate-180" aria-hidden />
+                <span className="hidden sm:inline">{t('nav.signOut')}</span>
               </button>
             ) : (
               <Link
                 to="/login"
-                className="flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-accent hover:bg-app-hover"
+                className="ms-1 flex h-10 shrink-0 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-on-accent hover:bg-accent-hover"
               >
-                <LogIn size={16} aria-hidden />
-                Sign in
+                <LogIn size={16} className="rtl:rotate-180" aria-hidden />
+                {t('nav.signIn')}
               </Link>
             )}
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className={`mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-6 md:py-8 ${user ? 'pb-28 md:pb-8' : ''}`}>
-        <Outlet />
-      </main>
+        <main className="w-full flex-1 px-4 pb-8 pt-2 md:px-12 md:pb-12">
+          <div className="mx-auto max-w-4xl">
+            <Outlet />
+          </div>
+        </main>
+      </div>
 
       {user && (
         <nav
-          aria-label="Main"
-          className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-app-border bg-app-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+          aria-label={t('nav.main')}
+          className="window fixed inset-x-2 bottom-2 z-40 grid grid-cols-4 rounded-2xl pb-[env(safe-area-inset-bottom)] md:hidden"
         >
           {NAV.map(({ to, label, icon: Icon, end }) => (
             <NavLink
@@ -97,7 +98,7 @@ export default function AppShell() {
               }
             >
               <Icon size={20} aria-hidden />
-              {label}
+              {t(label)}
             </NavLink>
           ))}
         </nav>

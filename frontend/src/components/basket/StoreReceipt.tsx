@@ -1,5 +1,5 @@
+import { useI18n } from '../../i18n/LanguageContext';
 import type { Alternative, BasketLine, ParsedItem, StoreBasket } from '../../types';
-import { formatPrice } from '../../utils/format';
 import BasketLineRow from './BasketLineRow';
 
 interface StoreReceiptProps {
@@ -16,12 +16,13 @@ interface StoreReceiptProps {
 export default function StoreReceipt({
   store, items, sharedItems, editable, canSave, busyLine, onConfirm, onSwap,
 }: StoreReceiptProps) {
+  const { t, tp, price, chain } = useI18n();
   const hasExtras = store.full_total !== store.shared_total;
   return (
-    <section aria-label={`${store.chain_name} receipt`} className="rounded-2xl border border-app-border bg-app-surface p-4 md:p-5">
+    <section aria-label={t('results.receiptAria', { chain: chain(store.chain_slug) })} className="rounded-3xl border border-app-border bg-app-surface p-4 md:p-6">
       <header className="mb-1 text-center">
-        <p className="font-mono text-sm font-bold uppercase tracking-widest">{store.chain_name}</p>
-        <p dir="auto" className="text-xs text-app-text-secondary">{store.store_name}</p>
+        <p className="font-mono text-sm font-bold uppercase tracking-widest">{chain(store.chain_slug)}</p>
+        <p dir="auto" className="text-center text-xs text-app-text-secondary">{store.store_name}</p>
       </header>
       <div className="receipt-rule my-3" />
       <ul className="divide-y divide-app-border">
@@ -39,15 +40,15 @@ export default function StoreReceipt({
         ))}
       </ul>
       <div className="receipt-rule my-3" />
-      <dl className="space-y-1 font-mono text-sm">
+      <dl className="space-y-1 text-sm">
         <div className="flex justify-between font-bold">
-          <dt>Total ({sharedItems.length} shared item{sharedItems.length === 1 ? '' : 's'})</dt>
-          <dd>{formatPrice(store.shared_total)}</dd>
+          <dt>{tp('results.total', sharedItems.length)}</dt>
+          <dd className="font-mono">{price(store.shared_total)}</dd>
         </div>
         {hasExtras && (
           <div className="flex justify-between text-app-text-secondary">
-            <dt>Everything found here</dt>
-            <dd>{formatPrice(store.full_total)}</dd>
+            <dt>{t('results.everythingHere')}</dt>
+            <dd className="font-mono">{price(store.full_total)}</dd>
           </div>
         )}
       </dl>

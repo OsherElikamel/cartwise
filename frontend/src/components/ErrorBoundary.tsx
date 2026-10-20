@@ -1,9 +1,12 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import en from '../i18n/en';
+import he from '../i18n/he';
 
 interface State {
   hasError: boolean;
 }
 
+/** Sits outside every provider, so it reads the language directly. */
 export default class ErrorBoundary extends Component<{ children: ReactNode }, State> {
   state: State = { hasError: false };
 
@@ -17,16 +20,17 @@ export default class ErrorBoundary extends Component<{ children: ReactNode }, St
 
   render() {
     if (!this.state.hasError) return this.props.children;
+    const m = document.documentElement.lang === 'he' ? he : en;
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
-        <p className="text-lg font-semibold">Something broke on this page.</p>
-        <p className="text-sm text-app-text-secondary">Your lists and choices are safe. Reloading usually fixes it.</p>
+        <p className="text-lg font-semibold">{m['error.crashTitle']}</p>
+        <p className="text-sm text-app-text-secondary">{m['error.crashBody']}</p>
         <button
           type="button"
           onClick={() => window.location.assign('/')}
-          className="h-11 rounded-xl bg-accent px-5 text-sm font-semibold text-on-accent"
+          className="h-11 rounded-full bg-accent px-5 text-sm font-semibold text-on-accent"
         >
-          Back to CartWise
+          {m['error.crashBack']}
         </button>
       </div>
     );

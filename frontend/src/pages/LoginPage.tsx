@@ -5,11 +5,13 @@ import Button from '../components/ui/Button';
 import TextField from '../components/ui/TextField';
 import { useAuth } from '../contexts/AuthContext';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useI18n } from '../i18n/LanguageContext';
 import { RETURN_TO_KEY } from '../services/api';
 import { getErrorMessage } from '../utils/errors';
 
 export default function LoginPage() {
-  useDocumentTitle('Sign in');
+  const { t } = useI18n();
+  useDocumentTitle(t('title.signIn'));
   const { login } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -28,7 +30,7 @@ export default function LoginPage() {
       sessionStorage.removeItem(RETURN_TO_KEY);
       navigate(returnTo ?? '/', { replace: true });
     } catch (err) {
-      setError(getErrorMessage(err, 'Could not sign in.'));
+      setError(getErrorMessage(err, t, 'auth.signInFailed'));
     } finally {
       setLoading(false);
     }
@@ -36,18 +38,18 @@ export default function LoginPage() {
 
   return (
     <AuthLayout
-      title="Welcome back"
-      subtitle="Sign in to compare at your own branches and keep your product choices."
-      footer={<>New here? <Link to="/register" className="font-semibold text-accent hover:underline">Create an account</Link></>}
+      title={t('auth.welcomeBack')}
+      subtitle={t('auth.signInSubtitle')}
+      footer={<>{t('auth.newHere')} <Link to="/register" className="font-semibold text-accent hover:underline">{t('auth.createAccount')}</Link></>}
     >
       {params.get('expired') && (
-        <p role="status" className="mb-4 rounded-xl bg-warning/10 px-3 py-2 text-sm text-warning">Your session expired. Sign in to continue where you were.</p>
+        <p role="status" className="mb-4 rounded-xl bg-warning/10 px-3 py-2 text-sm text-warning">{t('auth.expired')}</p>
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <TextField id="email" label="Email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-        <TextField id="password" label="Password" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <TextField id="email" label={t('auth.email')} type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <TextField id="password" label={t('auth.password')} type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
         {error && <p role="alert" className="text-sm text-danger">{error}</p>}
-        <Button type="submit" loading={loading} className="w-full">Sign in</Button>
+        <Button type="submit" loading={loading} className="w-full">{t('auth.signIn')}</Button>
       </form>
     </AuthLayout>
   );

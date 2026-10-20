@@ -2,55 +2,76 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* CartWise is a supermarket receipt: warm paper, receipt-mono prices,
-   a deal-sticker yellow and a "you saved" green. */
+/* CartWise: a deep-navy night sky with a blue/cyan/violet aurora, content in a
+   raised glass window. Signature touches from the receipt: mono prices, the
+   dashed tear line, and a deal-sticker yellow. */
 @theme {
-  --color-app-bg: #F6F4EE;
+  --color-app-bg: #F4F7FB;
   --color-app-surface: #FFFFFF;
-  --color-app-elevated: #F0EDE4;
-  --color-app-border: #E4DFD3;
-  --color-app-text: #1C1B18;
-  --color-app-text-secondary: #6B665C;
-  --color-app-hover: rgba(0, 0, 0, 0.04);
+  --color-app-elevated: #EEF2F8;
+  --color-app-border: #DCE3EE;
+  --color-app-text: #0F172A;
+  --color-app-text-secondary: #526077;
+  --color-app-hover: rgba(15, 23, 42, 0.05);
 
-  --color-accent: #15803D;
-  --color-accent-hover: #166534;
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
   --color-on-accent: #FFFFFF;
   --color-deal: #FACC15;
   --color-on-deal: #1C1B18;
-  --color-success: #15803D;
+  --color-brand-from: #3B82F6;
+  --color-brand-to: #7C3AED;
+  --color-success: #047857;
   --color-warning: #B45309;
   --color-danger: #B91C1C;
   /* Toasts keep white text on a dark fill in both themes. */
-  --color-toast-success: #166534;
+  --color-toast-success: #065F46;
   --color-toast-error: #991B1B;
 
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-:root.dark {
-  --color-app-bg: #12130F;
-  --color-app-surface: #1B1C17;
-  --color-app-elevated: #24251F;
-  --color-app-border: rgba(255, 255, 255, 0.09);
-  --color-app-text: #F2F0E9;
-  --color-app-text-secondary: #A8A397;
-  --color-app-hover: rgba(255, 255, 255, 0.05);
+:root {
+  --window-bg: rgba(255, 255, 255, 0.66);
+  --aurora-1: #93C5FD;
+  --aurora-2: #A5F3FC;
+  --aurora-3: #C4B5FD;
+  --aurora-opacity: 0.8;
+}
 
-  --color-accent: #4ADE80;
-  --color-accent-hover: #86EFAC;
-  --color-on-accent: #0B1A10;
-  --color-success: #4ADE80;
+:root.dark {
+  --color-app-bg: #0B0F17;
+  --color-app-surface: #121826;
+  --color-app-elevated: #1A2233;
+  --color-app-border: rgba(148, 163, 184, 0.16);
+  --color-app-text: #E8EDF5;
+  --color-app-text-secondary: #93A0B4;
+  --color-app-hover: rgba(148, 163, 184, 0.08);
+
+  --color-accent: #60A5FA;
+  --color-accent-hover: #93C5FD;
+  --color-on-accent: #06101F;
+  --color-success: #34D399;
   --color-warning: #FBBF24;
   --color-danger: #F87171;
+
+  --window-bg: rgba(14, 19, 31, 0.6);
+  --aurora-1: #2563EB;
+  --aurora-2: #0891B2;
+  --aurora-3: #7C3AED;
+  --aurora-opacity: 0.85;
 }
 
 :root.dark { color-scheme: dark; }
 :root:not(.dark) { color-scheme: light; }
 
+/* Background on <html> only: a body background would be painted over the
+   aurora's z-index -1 layer (in-flow block backgrounds paint above negative
+   z-index children), hiding the glow entirely. */
+html { background-color: var(--color-app-bg); }
+
 html, body {
-  background-color: var(--color-app-bg);
   color: var(--color-app-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -68,25 +89,55 @@ html, body {
   outline-offset: 2px;
 }
 
-/* Mobile Safari zooms into inputs smaller than 16px and stays zoomed. */
 @media (max-width: 767px) {
   input, select, textarea { font-size: 1rem; }
 }
 
-/* Hebrew product and branch names keep right-to-left character order (dir="auto")
-   but align left like the rest of the English layout. Fields being typed into
-   keep their natural alignment. */
-:where(p, span, li, h1, h2, h3)[dir="auto"] { text-align: left; }
-
-/* The dashed tear line of a receipt. */
-.receipt-rule {
-  border-top: 1px dashed var(--color-app-border);
+/* The aurora glow behind everything. The frame clips it to the viewport: the
+   glow reaches past the screen edges for soft falloff, and unclipped that
+   overflow becomes sideways scrolling (in RTL pages especially). */
+.aurora-frame {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
 }
+.aurora {
+  position: absolute;
+  inset: -30% -15% auto -15%;
+  height: 85vh;
+  background:
+    radial-gradient(38% 55% at 18% 35%, var(--aurora-1), transparent 70%),
+    radial-gradient(34% 50% at 52% 22%, var(--aurora-2), transparent 70%),
+    radial-gradient(38% 55% at 86% 38%, var(--aurora-3), transparent 70%);
+  filter: blur(70px);
+  opacity: var(--aurora-opacity);
+}
+
+/* The raised glass window that holds the app. */
+.window {
+  background-color: var(--window-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-app-border);
+  box-shadow: 0 30px 80px -30px rgba(2, 6, 23, 0.45);
+}
+
+/* Hebrew names keep right-to-left letter order (dir="auto") but align with the
+   page, in either language. In the base layer so utilities like text-center
+   still win. Fields being typed into keep their natural alignment. */
+@layer base {
+  :where(p, span, li, h1, h2, h3)[dir="auto"] { text-align: left; }
+  html[dir="rtl"] :where(p, span, li, h1, h2, h3)[dir="auto"] { text-align: right; }
+}
+
+.receipt-rule { border-top: 1px dashed var(--color-app-border); }
 
 /* A fat highlighter stroke behind a key word. */
 .marker {
-  background-image: linear-gradient(transparent 55%, color-mix(in srgb, var(--color-deal) 70%, transparent) 55%);
-  padding: 0 0.15em;
+  background-image: linear-gradient(transparent 58%, color-mix(in srgb, var(--color-deal) 75%, transparent) 58%);
+  padding: 0 0.12em;
 }
 
 @keyframes toast-in {
