@@ -9,7 +9,7 @@ from slowapi.errors import RateLimitExceeded
 from app.core import errors
 from app.core.config import settings
 from app.core.rate_limit import limiter
-from app.routers import baskets, catalog
+from app.routers import auth, baskets, catalog, me
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -49,6 +49,8 @@ async def global_exception_handler(_request: Request, exc: Exception):
     return JSONResponse(status_code=500, content={"detail": "Internal server error"})
 
 
+app.include_router(auth.router)
+app.include_router(me.router)
 app.include_router(catalog.router)
 app.include_router(baskets.router)
 

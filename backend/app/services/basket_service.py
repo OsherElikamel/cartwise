@@ -21,14 +21,34 @@ from app.ai.provider import LLMProvider
 from app.ai.schemas import Candidate, MatchDecision, MatchRequestItem
 from app.core.errors import ValidationError
 from app.models.chain import Chain, Store
+from app.models.user import User
 from app.schemas.basket import BasketComparison, BasketLine, StoreBasket
 from app.schemas.catalog import ProductResult
 from app.services.catalog_service import search_products
 from app.services.pricing import price_line
+from app.services.user_store_service import demo_store_ids, followed_store_ids
 
 logger = logging.getLogger(__name__)
 
 CANDIDATES_PER_STORE = 10
+
+
+def allowed_store_ids(db: Session, user: User | None, requested: list[UUID] | None) -> list[UUID]:
+    """Which branches this caller may compare on.
+
+    Guests get the demo branches. Signed-in users get the branches they follow
+    (or the demo set until they follow some). A request may narrow that set,
+    never widen it.
+    """
+    allowed = followed_store_ids(db, user) if user else []
+    if not allowed:
+        allowed = demo_store_ids(db)
+    if requested is None:
+        return allowed
+    outside = set(requested) - set(allowed)
+    if outside:
+        raise ValidationError("Compare only on your own branches" if user else "Sign in to compare on other branches")
+    return requested
 
 
 def _resolve_stores(db: Session, store_ids: list[UUID] | None) -> list[tuple[Store, Chain]]:

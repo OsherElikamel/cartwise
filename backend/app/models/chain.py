@@ -36,6 +36,10 @@ class Store(Base, TimestampMixin):
     address: Mapped[str | None] = mapped_column(String(300))
     city_code: Mapped[str | None] = mapped_column(String(10))
     is_tracked: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    # Demo branches are what guests compare on; they are never pruned.
+    is_demo: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     prices_synced_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # Last time any user followed this branch; drives pruning of abandoned branches.
+    last_followed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     chain: Mapped[Chain] = relationship(back_populates="stores")

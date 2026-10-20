@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:5173"]
     RATE_LIMIT_ENABLED: bool = True
     DATA_DIR: str = "data"
+    # Each tracked branch costs ~7 MB (items, deals, trigram index); this caps the database.
+    MAX_TRACKED_STORES: int = 50
+    PRUNE_AFTER_DAYS: int = 30
 
     LLM_PROVIDER: Literal["gemini", "anthropic"] = "gemini"
     GEMINI_API_KEY: str = ""

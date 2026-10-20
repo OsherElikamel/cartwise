@@ -54,6 +54,7 @@ def search_stores(
         StoreResponse(
             id=store.id, chain_slug=chain.slug, chain_name=chain.name, store_code=store.store_code,
             name=store.name, address=store.address, is_tracked=store.is_tracked,
+            is_ready=store.prices_synced_at is not None,
         )
         for store, chain in rows
     ]

@@ -21,8 +21,7 @@ class StoreResponse(BaseModel):
     name: str
     address: str | None
     is_tracked: bool
-
-    model_config = {"from_attributes": True}
+    is_ready: bool = False
 
 
 class Deal(BaseModel):
