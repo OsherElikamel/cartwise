@@ -45,11 +45,16 @@ jobs:
       - run: alembic upgrade head
       - name: Bootstrap (cities + demo branches)
         if: ${{ inputs.bootstrap }}
+        # Every step runs even if one fails (one chain's site being unreachable
+        # shouldn't block the others); the step still fails at the end if any did.
         run: |
-          python -m app.ingestion.run stores
-          python -m app.ingestion.run localities
-          python -m app.ingestion.run track rami-levy 709 --demo
-          python -m app.ingestion.run track shufersal 92 --demo
-          python -m app.ingestion.run track yohananof 5 --demo
-          python -m app.ingestion.run track osher-ad 9 --demo
-      - run: python -m app.ingestion.run nightly
+          failed=0
+          python -m app.ingestion.run stores || failed=1
+          python -m app.ingestion.run localities || failed=1
+          for branch in "rami-levy 709" "shufersal 92" "yohananof 5" "osher-ad 9"; do
+            python -m app.ingestion.run track $branch --demo || failed=1
+          done
+          exit $failed
+      - name: Nightly refresh
+        if: ${{ !cancelled() }}
+        run: python -m app.ingestion.run nightly
