@@ -16,6 +16,7 @@ NUMBER_WORDS = {"אחד": 1, "אחת": 1, "שני": 2, "שתי": 2, "שניים"
 LEADING_NUMBER = re.compile(r"^(\d+(?:[.,]\d+)?)\s*(?:x|×)?\s*")
 TRAILING_KG = re.compile(r"\s*(\d+(?:[.,]\d+)?)?\s*(?:kg|ק\"ג|ק״ג|קילו)\s*$", re.IGNORECASE)
 TRAILING_GRAMS = re.compile(r"\s*(\d+)\s*(?:g|גרם|גר)\s*$", re.IGNORECASE)
+KG_WORDS = {"קילו", "קג", 'ק"ג', "ק״ג", "kg"}
 
 
 # Hebrew letters take a final form at the end of a word.
@@ -55,6 +56,10 @@ def parse_line(line: str) -> ParsedItem | None:
         quantity, unit, text = 1.0, "kg", text[len("קילו "):]
     elif match := LEADING_NUMBER.match(text):
         quantity, text = float(match.group(1).replace(",", ".")), text[match.end():]
+        # "3 קילו פרגיות": the number is kilos, not packages.
+        first = text.split()[0] if text.split() else ""
+        if first.lower() in KG_WORDS:
+            unit, text = "kg", text[len(first):].strip()
     elif (first := text.split()[0]) in NUMBER_WORDS:
         quantity, text = float(NUMBER_WORDS[first]), text[len(first):].strip()
 

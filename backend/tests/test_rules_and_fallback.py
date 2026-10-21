@@ -15,6 +15,8 @@ from app.main import app
     ("גבינה צהובה 200 גרם", 0.2, "kg", "גבינה צהובה"),
     ("שתי פחיות טונה", 2, "unit", "טונה"),
     ("במבה", 1, "unit", "במבה"),
+    ("3 קילו פרגיות", 3, "kg", "פרגיות"),
+    ("1.5 ק\"ג עגבניות", 1.5, "kg", "עגבניות"),
 ])
 def test_rule_parser_reads_quantities_and_units(line, quantity, unit, first_term):
     item = parse_line(line)
