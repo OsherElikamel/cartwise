@@ -39,5 +39,6 @@ services:
         source: /*
         destination: /index.html
     envVars:
+      # Render picks the subdomain (the plain names were taken); this is the API's.
       - key: VITE_API_BASE_URL
-        sync: false
+        value: https://cartwise-api-mc5x.onrender.com/api

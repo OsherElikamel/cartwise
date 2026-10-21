@@ -1,6 +1,6 @@
 # CartWise
 
-> Work in progress. The price ingestion pipeline is done; the API, AI matching and web app are being built now.
+**[Live demo](https://cartwise-vmn4.onrender.com)**: hosted on Render's free tier, so the first request may take up to a minute to wake the server.
 
 Type your weekly grocery list in plain Hebrew and CartWise finds the cheapest basket across Israel's big supermarket chains, using the price files every chain is required by law to publish (the 2014 Food Act, חוק קידום התחרות בענף המזון).
 
