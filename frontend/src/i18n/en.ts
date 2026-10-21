@@ -38,6 +38,10 @@ const en = {
   'context.change': 'Change',
   'context.signUp': 'Sign up to use your own branches',
 
+  'noBranches.title': 'Choose your branches first',
+  'noBranches.body': "Prices differ from branch to branch, so CartWise compares at the branches you shop at, and you haven't chosen any yet.",
+  'noBranches.choose': 'Choose my branches',
+  'noBranches.demo': 'Use the demo branches in Ashdod this time',
   'input.label': 'Your grocery list',
   'input.help': 'One item per line, in Hebrew or English. Quantities like "2" or "חצי קילו" work.',
   'input.submit': 'Find the cheapest basket',
@@ -203,13 +207,14 @@ const en = {
   'error.code.list_not_found': 'That list wasn\'t found.',
   'error.code.comparison_not_found': 'That comparison wasn\'t found.',
   'error.code.locality_not_found': "That city wasn't found.",
+  'error.code.server_error': 'Something went wrong on our side. Please try again in a moment.',
   'error.code.ai_busy': 'The AI is busy right now. Please try again in a minute.',
   'error.code.ai_unavailable': 'The AI service is unavailable right now. Please try again.',
   'error.code.ai_bad_answer': 'The AI gave an unexpected answer. Please try again.',
   'auth.emailTakenAction': 'Sign in with this email',
   'error.crashTitle': 'Something broke on this page.',
   'error.crashBody': 'Your lists and choices are safe. Reloading usually fixes it.',
-  'error.crashBack': 'Back to CartWise',
+  'error.crashBack': 'Reload the page',
 } as const;
 
 export type MessageKey = keyof typeof en;

@@ -11,6 +11,7 @@ from app.models.store_item import StoreItem
 from app.schemas.catalog import ChainResponse, Deal, ProductResult, StoreResponse
 
 MIN_WORD_SIMILARITY = 0.3
+STRONG_MATCH = 0.8
 
 
 def list_chains(db: Session) -> list[ChainResponse]:
@@ -95,7 +96,13 @@ def search_products(
     # Many names contain the whole term (score 1.0); the closer overall match breaks the tie.
     tiebreak = func.similarity(terms[0], StoreItem.name)
     # Bought by weight: loose produce before canned or packaged products that share the word.
-    ordering = [StoreItem.is_weighted.desc()] if prefer_weighted else []
+    # Strong matches always come first. Only among them do weighted products
+    # lead for items bought by the kilo: preferring weighted products outright
+    # ranked weighted cherry tomatoes above packaged "פרגיות" for "3 קילו פרגיות".
+    strong = score >= STRONG_MATCH
+    ordering = [strong.desc()]
+    if prefer_weighted:
+        ordering.append(StoreItem.is_weighted.desc())
     # Among equal scores, a name that starts with one of the terms is almost
     # always the one meant ("במבה 80 גרם", not "פופקו פופקורן במבה"), and the
     # plain product usually has the shortest label ("עגבניה", not "עגבניות שרי").

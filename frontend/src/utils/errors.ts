@@ -28,6 +28,8 @@ export function getErrorMessage(err: unknown, t: Translate, fallback: MessageKey
   }
 
   const code = getErrorCode(err);
+  // The host's proxy answers 502/503 without our JSON (e.g. while the server restarts).
+  if (err.response.status >= 500 && !code) return t('error.code.server_error');
   if (code) {
     const key = `error.code.${code}`;
     if (isMessageKey(key)) return t(key);

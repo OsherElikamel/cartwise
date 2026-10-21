@@ -8,7 +8,7 @@ from slowapi.errors import RateLimitExceeded
 from app.core import errors
 from app.core.config import settings
 from app.core.rate_limit import limiter
-from app.routers import auth, baskets, catalog, lists, localities, matches, me
+from app.routers import auth, baskets, catalog, client_errors, lists, localities, matches, me
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -57,7 +57,7 @@ async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
 @app.exception_handler(Exception)
 async def global_exception_handler(_request: Request, exc: Exception):
     logger.exception("Unhandled exception: %s", exc)
-    return JSONResponse(status_code=500, content={"detail": "Internal server error"})
+    return JSONResponse(status_code=500, content={"detail": "Internal server error", "code": "server_error"})
 
 
 app.include_router(auth.router)
@@ -67,6 +67,7 @@ app.include_router(baskets.router)
 app.include_router(matches.router)
 app.include_router(lists.router)
 app.include_router(localities.router)
+app.include_router(client_errors.router)
 
 
 @app.get("/api/health", tags=["Health"])

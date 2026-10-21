@@ -1,12 +1,13 @@
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import BranchContext from '../components/basket/BranchContext';
 import ComparingIndicator from '../components/basket/ComparingIndicator';
 import HeroStats from '../components/basket/HeroStats';
 import ListInput from '../components/basket/ListInput';
 import ResultsView from '../components/basket/ResultsView';
 import Button from '../components/ui/Button';
+import Dialog from '../components/ui/Dialog';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useBasketEditing } from '../hooks/useBasketEditing';
@@ -26,12 +27,15 @@ export default function ComparePage() {
   const { t, date } = useI18n();
   const { showSuccess, showError } = useToast();
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const listId = params.get('list');
 
   const [text, setText] = useState(() => sessionStorage.getItem(DRAFT_KEY) ?? '');
   const [savedList, setSavedList] = useState<SavedList | null>(null);
   const [chains, setChains] = useState<Chain[]>([]);
   const [myStores, setMyStores] = useState<Store[]>([]);
+  const [myStoresLoaded, setMyStoresLoaded] = useState(false);
+  const [askBranches, setAskBranches] = useState(false);
   const [demoStores, setDemoStores] = useState<Store[]>([]);
   const [comparing, setComparing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +46,7 @@ export default function ComparePage() {
   useEffect(() => {
     getChains().then(setChains).catch(() => setChains([]));
     getDemoStores().then((stores) => setDemoStores(stores.filter((s) => s.is_ready))).catch(() => setDemoStores([]));
-    if (user) getMyStores().then(setMyStores).catch(() => setMyStores([]));
+    if (user) getMyStores().then(setMyStores).catch(() => setMyStores([])).finally(() => setMyStoresLoaded(true));
   }, [user]);
 
   useEffect(() => {
@@ -61,7 +65,15 @@ export default function ComparePage() {
     sessionStorage.setItem(DRAFT_KEY, value);
   };
 
+  // A signed-in user who hasn't chosen branches would silently get the Ashdod
+  // demo prices; ask first.
+  const requestComparison = () => {
+    if (user && myStoresLoaded && myStores.length === 0) setAskBranches(true);
+    else runComparison();
+  };
+
   const runComparison = async () => {
+    setAskBranches(false);
     setComparing(true);
     setError(null);
     setResult(null);
@@ -100,7 +112,7 @@ export default function ComparePage() {
 
       <BranchContext signedIn={Boolean(user)} myStores={myStores} demoStores={demoStores} />
 
-      <ListInput value={text} onChange={updateText} onSubmit={runComparison} loading={comparing} readOnly={Boolean(savedList)} />
+      <ListInput value={text} onChange={updateText} onSubmit={requestComparison} loading={comparing} readOnly={Boolean(savedList)} />
 
       {savedList && (
         <p className="text-xs text-app-text-secondary">
@@ -111,6 +123,21 @@ export default function ComparePage() {
         <Button variant="ghost" size="sm" icon={<Save size={14} />} onClick={saveAsList} loading={saving}>
           {t('input.saveAsList')}
         </Button>
+      )}
+
+      {askBranches && (
+        <Dialog
+          title={t('noBranches.title')}
+          onClose={() => setAskBranches(false)}
+          actions={(
+            <>
+              <Button onClick={() => navigate('/branches')}>{t('noBranches.choose')}</Button>
+              <Button variant="ghost" onClick={runComparison}>{t('noBranches.demo')}</Button>
+            </>
+          )}
+        >
+          {t('noBranches.body')}
+        </Dialog>
       )}
 
       {comparing && <ComparingIndicator lines={text.split('\n').filter((l) => l.trim())} chains={comparedChains} />}

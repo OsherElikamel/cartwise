@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import AppShell from '../components/layout/AppShell';
 import Skeleton from '../components/ui/Skeleton';
@@ -21,6 +21,14 @@ function PageFallback() {
 function ProtectedRoute() {
   const { user, isLoading } = useAuth();
   const location = useLocation();
+
+  // Arrived where sign-in was meant to return to: forget the saved path.
+  useEffect(() => {
+    if (user && sessionStorage.getItem(RETURN_TO_KEY) === location.pathname + location.search) {
+      sessionStorage.removeItem(RETURN_TO_KEY);
+    }
+  }, [user, location]);
+
   if (isLoading) return <PageFallback />;
   if (!user) {
     sessionStorage.setItem(RETURN_TO_KEY, location.pathname + location.search);
@@ -29,10 +37,19 @@ function ProtectedRoute() {
   return <Outlet />;
 }
 
+/** Sign-in and sign-up pages. This route alone decides where a signed-in user
+ *  goes next: new accounts to pick their branches, returning users back to where
+ *  they were. (When the pages also navigated, the two raced and "home" won,
+ *  dropping new users on the home page.) */
 function GuestRoute() {
   const { user, isLoading } = useAuth();
+  const location = useLocation();
   if (isLoading) return <PageFallback />;
-  return user ? <Navigate to="/" replace /> : <Outlet />;
+  if (user) {
+    const target = location.pathname === '/register' ? '/branches' : sessionStorage.getItem(RETURN_TO_KEY) ?? '/';
+    return <Navigate to={target} replace />;
+  }
+  return <Outlet />;
 }
 
 export default function AppRoutes() {

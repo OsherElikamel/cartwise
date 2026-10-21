@@ -1,19 +1,17 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import AuthLayout from '../components/layout/AuthLayout';
 import Button from '../components/ui/Button';
 import TextField from '../components/ui/TextField';
 import { useAuth } from '../contexts/AuthContext';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useI18n } from '../i18n/LanguageContext';
-import { RETURN_TO_KEY } from '../services/api';
 import { getErrorMessage } from '../utils/errors';
 
 export default function LoginPage() {
   const { t } = useI18n();
   useDocumentTitle(t('title.signIn'));
   const { login } = useAuth();
-  const navigate = useNavigate();
   const [params] = useSearchParams();
   const [email, setEmail] = useState(() => params.get('email') ?? '');
   const [password, setPassword] = useState('');
@@ -25,10 +23,7 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
     try {
-      await login(email, password);
-      const returnTo = sessionStorage.getItem(RETURN_TO_KEY);
-      sessionStorage.removeItem(RETURN_TO_KEY);
-      navigate(returnTo ?? '/', { replace: true });
+      await login(email, password);  // the route then returns the user to where they were
     } catch (err) {
       setError(getErrorMessage(err, t, 'auth.signInFailed'));
     } finally {

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AuthLayout from '../components/layout/AuthLayout';
 import Button from '../components/ui/Button';
 import TextField from '../components/ui/TextField';
@@ -12,7 +12,6 @@ export default function RegisterPage() {
   const { t } = useI18n();
   useDocumentTitle(t('title.register'));
   const { register } = useAuth();
-  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,8 +25,7 @@ export default function RegisterPage() {
     setError(null);
     setEmailTaken(false);
     try {
-      await register(name, email, password);
-      navigate('/branches', { replace: true });
+      await register(name, email, password);  // the route then takes new users to pick branches
     } catch (err) {
       setError(getErrorMessage(err, t, 'auth.createFailed'));
       setEmailTaken(getErrorCode(err) === 'email_taken');

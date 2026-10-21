@@ -39,6 +39,10 @@ const he: Record<MessageKey, string> = {
   'context.change': 'שינוי',
   'context.signUp': 'הרשמה כדי להשוות בסניפים שלך',
 
+  'noBranches.title': 'קודם בוחרים סניפים',
+  'noBranches.body': 'המחירים שונים מסניף לסניף, לכן CartWise משווה בסניפים שבהם קונים, ועוד לא נבחרו סניפים.',
+  'noBranches.choose': 'בחירת הסניפים שלי',
+  'noBranches.demo': 'הפעם להשוות בסניפי ההדגמה באשדוד',
   'input.label': 'רשימת הקניות שלך',
   'input.help': 'פריט אחד בכל שורה, בעברית או באנגלית. אפשר לכתוב כמויות כמו "2" או "חצי קילו".',
   'input.submit': 'למצוא את הסל הזול',
@@ -204,13 +208,14 @@ const he: Record<MessageKey, string> = {
   'error.code.list_not_found': 'הרשימה לא נמצאה.',
   'error.code.comparison_not_found': 'ההשוואה לא נמצאה.',
   'error.code.locality_not_found': 'העיר לא נמצאה.',
+  'error.code.server_error': 'משהו השתבש אצלנו. כדאי לנסות שוב בעוד רגע.',
   'error.code.ai_busy': 'ה-AI עמוס כרגע. כדאי לנסות שוב בעוד דקה.',
   'error.code.ai_unavailable': 'שירות ה-AI לא זמין כרגע. כדאי לנסות שוב.',
   'error.code.ai_bad_answer': 'ה-AI החזיר תשובה לא צפויה. כדאי לנסות שוב.',
   'auth.emailTakenAction': 'התחברות עם האימייל הזה',
   'error.crashTitle': 'משהו נשבר בעמוד הזה.',
   'error.crashBody': 'הרשימות והבחירות שלך שמורות. רענון של הדף בדרך כלל פותר את זה.',
-  'error.crashBack': 'חזרה ל-CartWise',
+  'error.crashBack': 'טעינה מחדש של הדף',
 };
 
 export default he;
