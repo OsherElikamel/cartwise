@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+    # Also allow origins matching this pattern (the hosting platform picks the exact subdomain).
+    CORS_ORIGIN_REGEX: str | None = None
     RATE_LIMIT_ENABLED: bool = True
     DATA_DIR: str = "data"
     # Each tracked branch costs ~7 MB (items, deals, trigram index); this caps the database.

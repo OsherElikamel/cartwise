@@ -1,0 +1,55 @@
+name: Nightly prices
+
+# Refreshes branch lists, prunes abandoned branches, loads today's prices and
+# cleans the download cache, against the production database. Free on GitHub
+# Actions (Render cron jobs have a monthly minimum).
+#
+# Run it by hand with "bootstrap" once, on a fresh database: it loads the city
+# list and the four demo branches guests compare on.
+
+on:
+  schedule:
+    - cron: "30 2 * * *"  # 05:30 in Israel (summer time), after the chains publish
+  workflow_dispatch:
+    inputs:
+      bootstrap:
+        description: "First run on a fresh database: load cities and the demo branches"
+        type: boolean
+        default: false
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # Ingestion makes no AI calls and issues no tokens; these only satisfy config validation.
+      JWT_SECRET_KEY: ingestion-job-issues-no-tokens
+      GEMINI_API_KEY: ingestion-job-makes-no-ai-calls
+      DATA_DIR: /tmp/cartwise-data
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r requirements.txt
+      - run: alembic upgrade head
+      - name: Bootstrap (cities + demo branches)
+        if: ${{ inputs.bootstrap }}
+        run: |
+          python -m app.ingestion.run stores
+          python -m app.ingestion.run localities
+          python -m app.ingestion.run track rami-levy 709 --demo
+          python -m app.ingestion.run track shufersal 92 --demo
+          python -m app.ingestion.run track yohananof 5 --demo
+          python -m app.ingestion.run track osher-ad 9 --demo
+      - run: python -m app.ingestion.run nightly
