@@ -20,24 +20,20 @@ class Settings(BaseSettings):
     # Downloaded price files are only needed for the current run; keep a few days for debugging.
     CACHE_DAYS: int = 3
 
-    LLM_PROVIDER: Literal["gemini", "anthropic"] = "gemini"
+    LLM_PROVIDER: Literal["gemini"] = "gemini"
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
     # Used when the main model's per-minute free quota runs out (quotas are per model).
     GEMINI_FALLBACK_MODEL: str = "gemini-3.5-flash-lite"
-    ANTHROPIC_API_KEY: str = ""
-    CLAUDE_MODEL: str = "claude-sonnet-5-5"
     # A slow AI answer is worse than none: past this, fall back to rule-based matching.
     AI_TIMEOUT_SECONDS: float = 20
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 
     @model_validator(mode="after")
-    def _require_active_llm_key(self):
-        # Only the selected provider's key is required, but that one must exist.
-        key = self.GEMINI_API_KEY if self.LLM_PROVIDER == "gemini" else self.ANTHROPIC_API_KEY
-        if not key:
-            raise ValueError(f"LLM_PROVIDER={self.LLM_PROVIDER} needs its API key set")
+    def _require_llm_key(self):
+        if not self.GEMINI_API_KEY:
+            raise ValueError("GEMINI_API_KEY must be set")
         return self
 
     @property
