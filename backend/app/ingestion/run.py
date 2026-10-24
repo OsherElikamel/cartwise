@@ -3,6 +3,7 @@
     python -m app.ingestion.run stores            # all chains' branch lists
     python -m app.ingestion.run track rami-levy 1 # start tracking a branch
     python -m app.ingestion.run prices            # refresh every tracked branch
+    python -m app.ingestion.run prices --stale-hours 12  # only branches a run missed
     python -m app.ingestion.run prune             # untrack branches nobody follows
     python -m app.ingestion.run nightly           # all of the above, in order, plus cache cleanup
 """
@@ -10,8 +11,9 @@
 import argparse
 import logging
 import sys
+from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 
 from app.core.config import settings
 from app.core.errors import DomainError
@@ -83,9 +85,12 @@ def cmd_prices(args) -> int:
     failures = 0
     with SessionLocal() as db:
         for config in _chains(args.chain):
-            stores = db.scalars(
-                select(Store).join(Chain).where(Chain.slug == config.slug, Store.is_tracked.is_(True))
-            ).all()
+            query = select(Store).join(Chain).where(Chain.slug == config.slug, Store.is_tracked.is_(True))
+            if args.stale_hours is not None:
+                # Catch-up runs: only branches the last run missed (a chain's site was down).
+                cutoff = datetime.now(timezone.utc) - timedelta(hours=args.stale_hours)
+                query = query.where(or_(Store.prices_synced_at.is_(None), Store.prices_synced_at < cutoff))
+            stores = db.scalars(query).all()
             if not stores:
                 continue
             source = config.make_source()
@@ -105,7 +110,7 @@ def cmd_nightly(args) -> int:
     Each step runs even if an earlier one failed (a chain's portal being down
     shouldn't stop the others), and the exit code reports any failure.
     """
-    no_filter = argparse.Namespace(chain=None, days=settings.PRUNE_AFTER_DAYS)
+    no_filter = argparse.Namespace(chain=None, days=settings.PRUNE_AFTER_DAYS, stale_hours=None)
     results = [cmd_stores(no_filter), cmd_prune(no_filter), cmd_prices(no_filter)]
     removed = prune_cache(settings.CACHE_DAYS)
     logger.info("Removed %d cached files older than %d days", removed, settings.CACHE_DAYS)
@@ -146,6 +151,7 @@ def main(argv: list[str] | None = None) -> int:
 
     p = sub.add_parser("prices", help="refresh prices for tracked branches")
     p.add_argument("--chain", choices=choices)
+    p.add_argument("--stale-hours", type=float, help="only branches last loaded more than this many hours ago")
     p.set_defaults(func=cmd_prices)
 
     args = parser.parse_args(argv)

@@ -4,12 +4,16 @@ name: Nightly prices
 # cleans the download cache, against the production database. Free on GitHub
 # Actions (Render cron jobs have a monthly minimum).
 #
+# Shufersal's site sometimes stalls when called from GitHub's US servers, so two
+# catch-up runs later in the day reload only the branches the morning run missed.
+#
 # Run it by hand with "bootstrap" once, on a fresh database: it loads the city
 # list and the four demo branches guests compare on.
 
 on:
   schedule:
     - cron: "30 2 * * *"  # 05:30 in Israel (summer time), after the chains publish
+    - cron: "0 11,17 * * *"  # catch-up: branches still not loaded today
   workflow_dispatch:
     inputs:
       bootstrap:
@@ -56,5 +60,8 @@ jobs:
           done
           exit $failed
       - name: Nightly refresh
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && github.event.schedule != '0 11,17 * * *' }}
         run: python -m app.ingestion.run nightly
+      - name: Catch-up (branches the last run missed)
+        if: ${{ github.event.schedule == '0 11,17 * * *' }}
+        run: python -m app.ingestion.run prices --stale-hours 12

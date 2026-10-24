@@ -11,6 +11,8 @@ Both expose the same interface, so the pipeline never cares which is which.
 import html
 import logging
 import re
+import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -70,17 +72,42 @@ class Source(Protocol):
 class ShufersalSource:
     BASE_URL = "https://prices.shufersal.co.il/FileObject/UpdateCategory"
     CATEGORIES = {"PriceFull": 2, "PromoFull": 4, "Stores": 5}
+    # From abroad (the nightly job runs on US servers) the site answers in seconds on
+    # most days and stalls past the timeout on others, so a stall gets two more tries.
+    RETRY_DELAYS = (10, 30)
 
-    def __init__(self) -> None:
+    def __init__(self, sleep: Callable[[float], None] = time.sleep) -> None:
         self.client = httpx.Client(timeout=TIMEOUT, follow_redirects=True)
+        self._sleep = sleep
+        # Once every try has failed, the rest of the run skips the site instead of
+        # spending minutes per branch on the same outage.
+        self._unreachable = False
+
+    def _get(self, url: str, what: str, params: dict | None = None) -> httpx.Response:
+        if self._unreachable:
+            raise UpstreamError(f"{what} skipped: Shufersal was unreachable earlier in this run")
+        delays = list(self.RETRY_DELAYS)
+        while True:
+            try:
+                response = self.client.get(url, params=params)
+                response.raise_for_status()
+                return response
+            except httpx.HTTPError as exc:
+                retryable = isinstance(exc, httpx.TransportError) or (
+                    isinstance(exc, httpx.HTTPStatusError) and exc.response.status_code >= 500
+                )
+                if not retryable:
+                    raise UpstreamError(f"{what} failed: {exc}") from exc
+                if not delays:
+                    self._unreachable = True
+                    raise UpstreamError(f"{what} failed after {len(self.RETRY_DELAYS) + 1} tries: {exc}") from exc
+                delay = delays.pop(0)
+                logger.warning("%s failed (%s); trying again in %ds", what, exc, delay)
+                self._sleep(delay)
 
     def list_files(self, kind: str, store_code: str | None = None) -> list[RemoteFile]:
         params = {"catID": self.CATEGORIES[kind], "storeId": store_code or 0, "page": 1}
-        try:
-            response = self.client.get(self.BASE_URL, params=params)
-            response.raise_for_status()
-        except httpx.HTTPError as exc:
-            raise UpstreamError(f"Shufersal file list failed: {exc}") from exc
+        response = self._get(self.BASE_URL, "Shufersal file list", params=params)
 
         files = []
         for raw_url in re.findall(r'href="(https://pricesprodpublic[^"]+)"', response.text):
@@ -92,12 +119,7 @@ class ShufersalSource:
         return files
 
     def download(self, remote: RemoteFile) -> bytes:
-        try:
-            response = self.client.get(remote.url)
-            response.raise_for_status()
-        except httpx.HTTPError as exc:
-            raise UpstreamError(f"Shufersal download failed for {remote.name}: {exc}") from exc
-        return response.content
+        return self._get(remote.url, f"Shufersal download of {remote.name}").content
 
 
 class PublishedPricesSource:
